@@ -1,24 +1,20 @@
-.idea
-node_modules
-.next
-
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
 /node_modules
-.pnp
+/.pnp
 .pnp.js
 
 # testing
-/sismo-connect-onchain-app/coverage
+/coverage
 
 # next.js
-/sismo-connect-onchain-app/.next
-/sismo-connect-onchain-app/front/.next/
-/sismo-connect-onchain-app/out/
+/.next
+/front/.next/
+/out/
 
 # production
-/sismo-connect-onchain-app/build
+/build
 
 # misc
 .DS_Store
@@ -58,4 +54,3 @@ docs/
 
 # Dotenv file
 .env
-
