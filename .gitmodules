@@ -1,0 +1,15 @@
+[submodule "sismo/sismo/governanceTokenAirdrop"]
+	path = sismo/sismo/governanceTokenAirdrop
+	url = https://github.com/raigal-r/governanceTokenAirdrop
+[submodule "sismo-connect-onchain-tutorial/lib/forge-std"]
+	path = sismo-connect-onchain-tutorial/lib/forge-std
+	url = git@github.com:foundry-rs/forge-std.git
+[submodule "sismo/lib/openzeppelin-contracts"]
+	path = sismo/lib/openzeppelin-contracts
+	url = https://github.com/openzeppelin/openzeppelin-contracts
+[submodule "sismo/lib/forge-std"]
+	path = sismo/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
+[submodule "sismo/lib/sismo-connect-solidity"]
+	path = sismo/lib/sismo-connect-solidity
+	url = https://github.com/sismo-core/sismo-connect-solidity
