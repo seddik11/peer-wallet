@@ -1,0 +1,3 @@
+[submodule "sismo/sismo/governanceTokenAirdrop"]
+	path = sismo/sismo/governanceTokenAirdrop
+	url = https://github.com/raigal-r/governanceTokenAirdrop
