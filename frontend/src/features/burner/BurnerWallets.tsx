@@ -1,4 +1,4 @@
-import { useBurnerWalletStore } from "@/features/useBurnerWalletStore";
+import { useBurnerWalletStore } from "@/features/burner/useBurnerWalletStore";
 
 export const BurnerWallets = () => {
   const { burnerWallets, generateBurnerWallet, removeBurnerWallet } =

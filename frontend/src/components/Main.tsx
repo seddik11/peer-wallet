@@ -1,4 +1,3 @@
-import Head from "next/head";
 import { useState, useEffect, useRef } from "react";
 import SocialLogin from "@biconomy/web3-auth";
 import { ChainId } from "@biconomy/core-types";
@@ -10,7 +9,9 @@ import {
   DEFAULT_ENTRYPOINT_ADDRESS,
 } from "@biconomy/account";
 import { IPaymaster, BiconomyPaymaster } from "@biconomy/paymaster";
-import {BurnerWallets} from "@/features/BurnerWallets";
+import { BurnerWallets } from "@/features/burner/BurnerWallets";
+import { WalletConnectModals } from "@/features/WalletConnect/modals/WalletConnectModals";
+import { WalletConnect } from "@/features/WalletConnect/WalletConnect";
 
 const contractAddress = "0x61ec475c64c5042a6Cbb7763f89EcAe745fc8315";
 
@@ -139,6 +140,8 @@ export default function Home() {
           </>
         )}
         <BurnerWallets />
+        <WalletConnect />
+        <WalletConnectModals />
       </main>
     </div>
   );
