@@ -12,7 +12,6 @@ export async function createWeb3Wallet() {
   });
 
   web3wallet = await Web3Wallet.init({
-    // @ts-ignore TODO fix this
     core,
     metadata: {
       name: "PeerWallet",

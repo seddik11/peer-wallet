@@ -1,6 +1,5 @@
 import dynamic from "next/dynamic";
 import { Suspense } from "react";
-import { BurnerWallets } from "@/features/burner/BurnerWallets";
 
 const Index = () => {
   const AppDynamic = dynamic(

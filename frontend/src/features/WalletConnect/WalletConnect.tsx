@@ -7,7 +7,9 @@ export const WalletConnect = () => {
 
   const onWalletConnect = () => {
     open({
-      view: "AuthRequestModal",
+      modalView: {
+        type: "OnConnectDappsModal",
+      },
     });
   };
 

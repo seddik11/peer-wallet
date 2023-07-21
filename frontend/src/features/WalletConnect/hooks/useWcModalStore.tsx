@@ -40,7 +40,7 @@ type ModalView =
       type: "AuthRequestModal";
       data: Web3WalletTypes.AuthRequest;
     }
-  | { type: "OnConnectDappsModal"; data: IWalletConnectSession }
+  | { type: "OnConnectDappsModal" }
   | { type: "SuccessModal"; data: { title: string; subtitle: string } };
 
 interface IModalStore {

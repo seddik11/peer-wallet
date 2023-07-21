@@ -40,9 +40,11 @@ export const OnConnectDappsModal = () => {
       }
     } catch (err: unknown) {
       console.log("version.3");
+      console.error(err);
       toast.error(err as string);
     } finally {
       console.log("version.4");
+      console.log("Finally");
       setLoading(false);
     }
   }

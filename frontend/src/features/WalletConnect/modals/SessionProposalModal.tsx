@@ -56,7 +56,7 @@ const SessionProposalModal = () => {
 
   // Hanlde approve action, construct session namespace
   function onApprove() {
-    if (modalView?.data) {
+    if (modalView?.type === "SessionProposalModal") {
       const namespaces: SessionTypes.Namespaces = {};
       Object.keys(requiredNamespaces).forEach((key) => {
         const accounts: string[] = [];
@@ -83,7 +83,7 @@ const SessionProposalModal = () => {
 
   // Handle reject action
   function onReject() {
-    if (modalView?.data) {
+    if (modalView?.type === "SessionProposalModal") {
       void web3wallet.rejectSession({
         id,
         reason: getSdkError("USER_REJECTED_METHODS"),

@@ -33,13 +33,11 @@ export function SessionProposalChainCard({ requiredNamespace }: IProps) {
         const allMethods = [...requiredNamespace.methods, ...extensionMethods];
         const allEvents = [...requiredNamespace.events, ...extensionEvents];
         // @ts-expect-error(80001) - chainId is a number
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-assignment
         const rgb = CHAIN_METADATA[chainId]?.rgb;
 
         return (
           <ChainCard
             key={chainId}
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
             rgb={rgb ?? ""}
             flexDirection="col"
             alignItems="flex-start"

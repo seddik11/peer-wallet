@@ -14,6 +14,7 @@ export const useInitialization = () => {
   const setEip155Address = useSettingsStore((state) => state.setEip155Address);
 
   const onInitialize = useCallback(async () => {
+    console.log("onInitialize");
     try {
       if (!wallet) throw new Error("No wallet found");
       const signerObj = wallet;
