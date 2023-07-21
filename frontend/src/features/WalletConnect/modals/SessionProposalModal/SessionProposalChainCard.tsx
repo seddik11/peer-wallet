@@ -1,17 +1,9 @@
 import { Fragment } from "react";
 import { type ProposalTypes } from "@walletconnect/types";
 
-import { EIP155_MAINNET_CHAINS, EIP155_TEST_CHAINS } from "../EIP155Data";
-import { formatChainName } from "../HelperUtil";
-import ChainCard from "./ChainCard";
-
-/**
- * Utilities
- */
-const CHAIN_METADATA = {
-  ...EIP155_MAINNET_CHAINS,
-  ...EIP155_TEST_CHAINS,
-};
+import ChainCard from "@/features/WalletConnect/components/ChainCard";
+import { formatChainName } from "@/features/WalletConnect/HelperUtil";
+import { EIP155_CHAINS } from "@/features/WalletConnect/EIP155Data";
 
 /**
  * Types
@@ -33,7 +25,7 @@ export function SessionProposalChainCard({ requiredNamespace }: IProps) {
         const allMethods = [...requiredNamespace.methods, ...extensionMethods];
         const allEvents = [...requiredNamespace.events, ...extensionEvents];
         // @ts-expect-error(80001) - chainId is a number
-        const rgb = CHAIN_METADATA[chainId]?.rgb;
+        const rgb = EIP155_CHAINS[chainId]?.rgb;
 
         return (
           <ChainCard

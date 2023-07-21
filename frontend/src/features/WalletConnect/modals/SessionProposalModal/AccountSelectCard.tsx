@@ -5,7 +5,7 @@ interface IProps {
   onSelect: (address: string) => void;
 }
 
-export default function AccountSelectCard({
+export function AccountSelectCard({
   address,
   selected,
   index,
@@ -20,8 +20,8 @@ export default function AccountSelectCard({
       className="flex cursor-pointer items-center justify-between"
     >
       <div
-        className={`border-cta-disabled-black flex w-full items-center justify-between rounded-2xl border-b border-solid p-4 ${
-          selected && "bg-[#f4f4f9]"
+        className={`flex flex-col justify-center w-full h-[64px] px-4 py-2 rounded-md ${
+          selected && "bg-accent"
         }`}
       >
         <div className="flex gap-4">

@@ -2,13 +2,13 @@ import { Fragment, useState } from "react";
 import { useWcModalStore } from "@/features/WalletConnect/hooks/useWcModalStore";
 import { type SessionTypes } from "@walletconnect/types";
 import { getSdkError } from "@walletconnect/utils";
-import { eip155Addresses } from "../Eip155WalletUtil";
-import { isEIP155Chain } from "../HelperUtil";
-import { web3wallet } from "../WalletConnectUtils";
-import { ProjectInfoCard } from "../components/ProjectInfoCard";
-import { ProposalSelectSection } from "../components/ProposalSelectSection";
-import { SessionProposalChainCard } from "../components/SessionProposalChainCard";
-import { RequestModalContainer } from "./RequestModalContainer";
+import { RequestModalContainer } from "@/features/WalletConnect/modals/RequestModalContainer";
+import { ProjectInfoCard } from "@/features/WalletConnect/modals/SessionProposalModal/ProjectInfoCard";
+import { SessionProposalChainCard } from "@/features/WalletConnect/modals/SessionProposalModal/SessionProposalChainCard";
+import { isEIP155Chain } from "@/features/WalletConnect/HelperUtil";
+import { web3wallet } from "@/features/WalletConnect/WalletConnectUtils";
+import { ProposalSelectSection } from "@/features/WalletConnect/modals/SessionProposalModal/ProposalSelectSection";
+import { eip155Addresses } from "@/features/WalletConnect/Eip155WalletUtil";
 
 const SessionProposalModal = () => {
   const [selectedAccounts, setSelectedAccounts] = useState<
@@ -71,7 +71,6 @@ const SessionProposalModal = () => {
           events: requiredNamespaces[key].events,
         };
       });
-
       void web3wallet.approveSession({
         id,
         relayProtocol: relays[0]?.protocol,
@@ -96,11 +95,6 @@ const SessionProposalModal = () => {
     <Fragment>
       <RequestModalContainer title="Session Proposal">
         <ProjectInfoCard metadata={proposer.metadata} />
-
-        {/* TODO(ilja) Relays selection */}
-
-        <hr />
-
         {Object.keys(requiredNamespaces)
           .filter((chain) => {
             if (!!requiredNamespaces[chain]) return true;
@@ -124,17 +118,20 @@ const SessionProposalModal = () => {
               </Fragment>
             );
           })}
+        <div>
+          <button className="btn btn-accent" onClick={onReject}>
+            <>Reject</>
+          </button>
+
+          <button
+            className="btn btn-primary"
+            onClick={onApprove}
+            disabled={!hasSelected}
+          >
+            <>Approve</>
+          </button>
+        </div>
       </RequestModalContainer>
-
-      <div>
-        <button className="btn btn-accent" onClick={onReject}>
-          <>Reject</>
-        </button>
-
-        <button className="btn btn-primary" onClick={onApprove}>
-          <>Approve</>
-        </button>
-      </div>
     </Fragment>
   );
 };

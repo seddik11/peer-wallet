@@ -52,7 +52,10 @@ export const useWalletConnectEventsManager = (initialized: boolean) => {
           return openModal({
             modalView: {
               type: "SessionSignModal",
-              data: requestEvent,
+              data: {
+                requestEvent: requestEvent,
+                requestSession: requestSession,
+              },
             },
           });
 
@@ -62,7 +65,10 @@ export const useWalletConnectEventsManager = (initialized: boolean) => {
           return openModal({
             modalView: {
               type: "SessionSignTypedDataModal",
-              data: requestSession,
+              data: {
+                requestEvent: requestEvent,
+                requestSession: requestSession,
+              },
             },
           });
 
@@ -71,7 +77,10 @@ export const useWalletConnectEventsManager = (initialized: boolean) => {
           return openModal({
             modalView: {
               type: "SessionSendTransactionModal",
-              data: requestSession,
+              data: {
+                requestEvent: requestEvent,
+                requestSession: requestSession,
+              },
             },
           });
 
@@ -79,7 +88,10 @@ export const useWalletConnectEventsManager = (initialized: boolean) => {
           return openModal({
             modalView: {
               type: "SessionUnsuportedMethodModal",
-              data: requestEvent,
+              data: {
+                requestEvent: requestEvent,
+                requestSession: requestSession,
+              },
             },
           });
       }

@@ -13,7 +13,7 @@ interface IRequesDetailsCard {
 
 export function RequesDetailsCard(props: IRequesDetailsCard) {
   return (
-    <div className="flex flex-col gap-8 h-[358px]">
+    <div className="flex flex-col gap-8">
       <div className="flex items-center justify-between gap-3 text-[14px]">
         <div className="flex items-center gap-3">
           <div>Blockchain</div>

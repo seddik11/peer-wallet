@@ -3,7 +3,7 @@ import { shallow } from "zustand/shallow";
 
 import AuthRequestModal from "./AuthRequestModal";
 import { OnConnectDappsModal } from "./OnConnectDappsModal";
-import SessionProposalModal from "./SessionProposalModal";
+import SessionProposalModal from "./SessionProposalModal/SessionProposalModal";
 import SessionSendTransactionModal from "./SessionSendTransactionModal";
 import SessionSignModal from "./SessionSignModal";
 import SessionSignTypedDataModal from "./SessionSignTypedDataModal";

@@ -14,12 +14,6 @@ export const OnConnectDappsModal = () => {
 
   if (view?.type !== "OnConnectDappsModal") throw new Error("Invalid view");
 
-  // Step 1 - Initialize wallets and wallet connect client
-  const initialized = useInitialization();
-
-  // Step 2 - Once initialized, set up wallet connect event manager
-  useWalletConnectEventsManager(initialized);
-
   async function onConnect(uri: string) {
     try {
       setLoading(true);
@@ -34,16 +28,13 @@ export const OnConnectDappsModal = () => {
       }
       if (version === 1) throw new Error("Version 1 not supported");
       if (version === 2) {
-        console.log("version.2");
-        console.log("Using new wallet connect client");
+        console.log("Using wc2");
         await pair({ uri });
       }
     } catch (err: unknown) {
-      console.log("version.3");
-      console.error(err);
+      console.log("Error onConnect", err);
       toast.error(err as string);
     } finally {
-      console.log("version.4");
       console.log("Finally");
       setLoading(false);
     }
@@ -53,7 +44,9 @@ export const OnConnectDappsModal = () => {
     <>
       <div className="h-full bg-white px-4 py-6">
         <input
-          placeholder="wc:29373..."
+          type="text"
+          placeholder="Enter WalletConnect URI"
+          className="input input-bordered w-full max-w-xs"
           disabled={loading}
           value={walletConnectUrl}
           onChange={(event) => setWalletConnectUrl(event.target.value)}
@@ -65,15 +58,16 @@ export const OnConnectDappsModal = () => {
           <button
             onClick={() => onConnect(walletConnectUrl)}
             disabled={!walletConnectUrl && !loading}
-            className="btn btn-primary h-16 w-full gap-2"
+            className="btn btn-primary w-full mb-2"
           >
             <>{loading ? "spinner" : <>Connect</>}</>
           </button>
           <button
             onClick={() => setShowScanner(true)}
-            className="btn btn-secondary h-16 w-full gap-2"
+            className="btn btn-secondary w-full"
+            disabled={true}
           >
-            <>Scan and connect</>
+            <>Scan and connect (TODO)</>
           </button>
         </div>
       </div>

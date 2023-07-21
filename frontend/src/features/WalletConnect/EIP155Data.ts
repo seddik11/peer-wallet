@@ -40,7 +40,7 @@ export const EIP155_MAINNET_CHAINS = {
     rgb: "235, 0, 25",
     rpc: "https://mainnet.optimism.io",
   },
-};
+} as const;
 
 export const EIP155_TEST_CHAINS = {
   "eip155:5": {
@@ -71,12 +71,12 @@ export const EIP155_TEST_CHAINS = {
     rgb: "235, 0, 25",
     rpc: "https://goerli.optimism.io",
   },
-};
+} as const;
 
 export const EIP155_CHAINS = {
   ...EIP155_MAINNET_CHAINS,
   ...EIP155_TEST_CHAINS,
-};
+} as const;
 
 /**
  * Methods

@@ -1,4 +1,4 @@
-import AccountSelectCard from "./AccountSelectCard";
+import { AccountSelectCard } from "@/features/WalletConnect/modals/SessionProposalModal/AccountSelectCard";
 
 /**
  * Types
@@ -20,7 +20,7 @@ export const ProposalSelectSection = ({
   onSelect,
 }: IProps) => {
   return (
-    <div className="flex flex-col h-[358px] w-full overflow-y-auto">
+    <div className="flex flex-col w-full overflow-y-auto mb-2">
       {addresses?.map((address, index) => (
         <AccountSelectCard
           key={address}
