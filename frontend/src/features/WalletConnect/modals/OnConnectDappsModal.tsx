@@ -32,16 +32,7 @@ export const OnConnectDappsModal = () => {
         toast.error("Invalid connection");
         return;
       }
-
-      // Route the provided URI to the v1 SignClient if URI version indicates it, else use v2.
-      if (version === 1) {
-        console.log("version.1");
-        console.log("Using legacy wallet connect client", uri);
-        const session = createLegacySignClient({ uri });
-        console.log("session", session);
-        return;
-      }
-
+      if (version === 1) throw new Error("Version 1 not supported");
       if (version === 2) {
         console.log("version.2");
         console.log("Using new wallet connect client");

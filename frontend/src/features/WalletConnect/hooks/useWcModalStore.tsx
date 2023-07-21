@@ -31,7 +31,10 @@ type ModalView =
     }
   | {
       type: "SessionUnsuportedMethodModal";
-      data: { id: number; method: string; params: any[] };
+      data: {
+        requestEvent: SignClientTypes.EventArguments["session_request"];
+        requestSession: SessionTypes.Struct;
+      };
     }
   | {
       type: "AuthRequestModal";

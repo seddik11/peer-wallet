@@ -2,19 +2,21 @@ import React from "react";
 import { useWcModalStore } from "@/features/WalletConnect/hooks/useWcModalStore";
 
 export const SuccessModal = () => {
-  const { close, data } = useWcModalStore((state) => ({
+  const { close, modalView } = useWcModalStore((state) => ({
     close: state.close,
-    data: state.data,
+    modalView: state.modalView,
   }));
 
+  if (modalView?.type !== "SuccessModal" || !modalView)
+    throw new Error("Invalid modal type");
   return (
     <div className="flex w-full flex-col items-center gap-4">
       <div className="flex w-full flex-col items-center">
         <p className="text-cta-black text-center text-2xl font-extrabold">
-          {data?.successMessage?.title}
+          {modalView?.data?.title}
         </p>
         <p className="text-fg-muted text-center text-base font-normal">
-          {data?.successMessage?.subtitle}
+          {modalView?.data.subtitle}
         </p>
       </div>
       <div

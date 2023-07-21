@@ -56,7 +56,7 @@ export default function SessionSignTypedDataModal() {
         <div className="bg-background mb-5 mt-10 rounded-lg p-4">
           <RequesDetailsCard
             chains={[chainId]}
-            protocol={requestSession.relay.protocol}
+            protocol={modalView.data.requestSession.relay.protocol}
             method={request.method}
             // @ts-ignore
             data={data}
@@ -71,7 +71,7 @@ export default function SessionSignTypedDataModal() {
       childen={getContentPopup()}
       action={"Sign Typed Data"}
       message={`You are about to sign a message with your Smart Wallet to ${
-        requestSession.peer.metadata || "Unknow Site"
+        modalView.data.requestSession.peer.metadata.url ?? "Unknow Site"
       }`}
       onApprove={onApprove}
       onReject={onReject}

@@ -10,9 +10,9 @@ import SessionSignTypedDataModal from "./SessionSignTypedDataModal";
 import SessionUnsuportedMethodModal from "./SessionUnsuportedMethodModal";
 
 export const WalletConnectModals = () => {
-  const { view, isOpen, close } = useWcModalStore(
+  const { modalView, isOpen, close } = useWcModalStore(
     (state) => ({
-      view: state.view,
+      modalView: state.modalView,
       isOpen: state.isOpen,
       close: state.close,
     }),
@@ -22,17 +22,19 @@ export const WalletConnectModals = () => {
   if (!isOpen) return null;
   return (
     <div>
-      {view === "OnConnectDappsModal" && <OnConnectDappsModal />}
-      {view === "SessionProposalModal" && <SessionProposalModal />}
-      {view === "SessionSignModal" && <SessionSignModal />}
-      {view === "SessionSignTypedDataModal" && <SessionSignTypedDataModal />}
-      {view === "SessionSendTransactionModal" && (
+      {modalView?.type === "OnConnectDappsModal" && <OnConnectDappsModal />}
+      {modalView?.type === "SessionProposalModal" && <SessionProposalModal />}
+      {modalView?.type === "SessionSignModal" && <SessionSignModal />}
+      {modalView?.type === "SessionSignTypedDataModal" && (
+        <SessionSignTypedDataModal />
+      )}
+      {modalView?.type === "SessionSendTransactionModal" && (
         <SessionSendTransactionModal />
       )}
-      {view === "SessionUnsuportedMethodModal" && (
+      {modalView?.type === "SessionUnsuportedMethodModal" && (
         <SessionUnsuportedMethodModal />
       )}
-      {view === "AuthRequestModal" && <AuthRequestModal />}
+      {modalView?.type === "AuthRequestModal" && <AuthRequestModal />}
     </div>
   );
 };
