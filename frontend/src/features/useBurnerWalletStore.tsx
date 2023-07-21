@@ -6,14 +6,17 @@ import { ethers } from "ethers";
 export type Address = `0x${string}`;
 
 export interface IBurnerStore {
+  activeBurnerWallet?: ethers.Wallet;
   burnerWallets: ethers.Wallet[];
   generateBurnerWallet: () => void;
   removeBurnerWallet: (address: string) => void;
+  selectBurnerWallet: (address: string) => void;
 }
 
 export const useBurnerWalletStore = create<IBurnerStore>()(
   persist(
     immer((set) => ({
+      activeBurnerWallet: undefined,
       burnerWallets: [],
       generateBurnerWallet: () => {
         set((store) => {
@@ -21,10 +24,17 @@ export const useBurnerWalletStore = create<IBurnerStore>()(
           store.burnerWallets.push(account);
         });
       },
-      removeBurnerWallet: (address: Address) => {
+      removeBurnerWallet: (address) => {
         set((store) => {
           store.burnerWallets = store.burnerWallets.filter(
             (account) => account.address !== address
+          );
+        });
+      },
+      selectBurnerWallet: (address) => {
+        set((store) => {
+          store.activeBurnerWallet = store.burnerWallets.find(
+            (account) => account.address === address
           );
         });
       },
@@ -34,3 +44,7 @@ export const useBurnerWalletStore = create<IBurnerStore>()(
     }
   )
 );
+
+export const useActiveBurnerWallet = () => {
+  return useBurnerWalletStore((state) => state.activeBurnerWallet);
+};
