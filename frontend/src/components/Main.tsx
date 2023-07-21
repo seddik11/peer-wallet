@@ -10,6 +10,7 @@ import {
   DEFAULT_ENTRYPOINT_ADDRESS,
 } from "@biconomy/account";
 import { IPaymaster, BiconomyPaymaster } from "@biconomy/paymaster";
+import {BurnerWallets} from "@/features/BurnerWallets";
 
 const contractAddress = "0x61ec475c64c5042a6Cbb7763f89EcAe745fc8315";
 
@@ -137,6 +138,7 @@ export default function Home() {
             </button>
           </>
         )}
+        <BurnerWallets />
       </main>
     </div>
   );

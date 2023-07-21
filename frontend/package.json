@@ -18,16 +18,27 @@
     "@types/node": "20.4.2",
     "@types/react": "18.2.15",
     "@types/react-dom": "18.2.7",
+    "@walletconnect/client": "^1.8.0",
+    "@walletconnect/core": "^2.8.3",
+    "@walletconnect/legacy-types": "^2.0.0",
+    "@walletconnect/sign-client": "2.8.4",
+    "@walletconnect/utils": "^2.8.3",
+    "@walletconnect/web3wallet": "^1.8.2",
     "autoprefixer": "10.4.14",
     "eslint": "8.45.0",
     "eslint-config-next": "13.4.11",
     "ethers": "5.7.2",
+    "immer": "^10.0.2",
     "next": "13.4.11",
     "postcss": "8.4.27",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "tailwindcss": "3.3.3",
-    "typescript": "5.1.6"
+    "typescript": "5.1.6",
+    "idb-keyval": "^6.2.1",
+    "use-immer": "^0.9.0",
+    "zod": "3.21.4",
+    "zustand": "4.3.7"
   },
   "devDependencies": {
     "daisyui": "^3.3.1"
