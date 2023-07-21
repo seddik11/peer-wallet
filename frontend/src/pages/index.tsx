@@ -1,5 +1,7 @@
+import useWalletStore from "@/store/wallet";
 import dynamic from "next/dynamic";
-import { Suspense } from "react";
+import { useRouter } from "next/router";
+import { Suspense, useEffect } from "react";
 
 const Index = () => {
   const AppDynamic = dynamic(
@@ -8,6 +10,15 @@ const Index = () => {
       ssr: false,
     }
   );
+
+  const router = useRouter();
+  const { wallet } = useWalletStore();
+
+  useEffect(() => {
+    if (wallet) {
+      router.push({ pathname: "/home" });
+    }
+  }, [router, wallet]);
 
   return (
     <>

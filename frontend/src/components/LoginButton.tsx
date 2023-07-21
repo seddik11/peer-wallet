@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
   BiconomySmartAccount,
   BiconomySmartAccountConfig,
@@ -10,6 +10,7 @@ import { ChainId } from "@biconomy/core-types";
 import { ethers } from "ethers";
 import { Bundler, IBundler } from "@biconomy/bundler";
 import truncateAddress from "@/utils/truncateAddress";
+import useWalletStore from "@/store/wallet";
 
 const bundler: IBundler = new Bundler({
   bundlerUrl: "https://bundler.biconomy.io/api/v2/80001/abc", // you can get this value from biconomy dashboard.
@@ -29,42 +30,9 @@ const LoginButton = ({ text }: { text?: string }) => {
   const [provider, setProvider] = useState<any>(null);
   const [address, setAddress] = useState<string>("");
 
-  useEffect(() => {
-    let configureLogin: any;
-    if (interval) {
-      configureLogin = setInterval(() => {
-        if (!!sdkRef.current?.provider) {
-          setupSmartAccount();
-          clearInterval(configureLogin);
-        }
-      }, 1000);
-    }
-  }, [interval]);
+  const { wallet, loginWallet, logoutWallet } = useWalletStore();
 
-  async function login() {
-    if (!sdkRef.current) {
-      const socialLoginSDK = new SocialLogin();
-      const signature1 = await socialLoginSDK.whitelistUrl(
-        "http://localhost:3000/"
-      );
-      await socialLoginSDK.init({
-        chainId: ethers.utils.hexValue(ChainId.POLYGON_MUMBAI).toString(),
-        network: "testnet",
-        whitelistUrls: {
-          "http://localhost:3000/": signature1,
-        },
-      });
-      sdkRef.current = socialLoginSDK;
-    }
-    if (!sdkRef.current.provider) {
-      sdkRef.current.showWallet();
-      enableInterval(true);
-    } else {
-      setupSmartAccount();
-    }
-  }
-
-  async function setupSmartAccount() {
+  const setupSmartAccount = useCallback(async () => {
     if (!sdkRef?.current?.provider) return;
     sdkRef.current.hideWallet();
     setLoading(true);
@@ -85,12 +53,50 @@ const LoginButton = ({ text }: { text?: string }) => {
       );
       biconomySmartAccount = await biconomySmartAccount.init();
       setAddress(await biconomySmartAccount.getSmartAccountAddress());
+
       setSmartAccount(biconomySmartAccount);
+      loginWallet(biconomySmartAccount);
+
       setLoading(false);
     } catch (err) {
       console.log("error setting up smart account... ", err);
     }
-  }
+  }, [loginWallet]);
+
+  useEffect(() => {
+    let configureLogin: any;
+    if (interval) {
+      configureLogin = setInterval(() => {
+        if (!!sdkRef.current?.provider) {
+          setupSmartAccount();
+          clearInterval(configureLogin);
+        }
+      }, 1000);
+    }
+  }, [interval, setupSmartAccount]);
+
+  const login = useCallback(async () => {
+    if (!sdkRef.current) {
+      const socialLoginSDK = new SocialLogin();
+      const signature1 = await socialLoginSDK.whitelistUrl(
+        "http://localhost:3000/"
+      );
+      await socialLoginSDK.init({
+        chainId: ethers.utils.hexValue(ChainId.POLYGON_MUMBAI).toString(),
+        network: "testnet",
+        whitelistUrls: {
+          "http://localhost:3000/": signature1,
+        },
+      });
+      sdkRef.current = socialLoginSDK;
+    }
+    if (!sdkRef.current.provider) {
+      sdkRef.current.showWallet();
+      enableInterval(true);
+    } else {
+      setupSmartAccount();
+    }
+  }, [setupSmartAccount]);
 
   const logout = async () => {
     if (!sdkRef.current) {
@@ -100,9 +106,16 @@ const LoginButton = ({ text }: { text?: string }) => {
     await sdkRef.current.logout();
     sdkRef.current.hideWallet();
     setSmartAccount(null);
+    logoutWallet();
     setAddress("");
     enableInterval(false);
   };
+
+  useEffect(() => {
+    if (wallet && !smartAccount) {
+      login();
+    }
+  }, [login, smartAccount, wallet]);
 
   return (
     <div>
@@ -117,7 +130,8 @@ const LoginButton = ({ text }: { text?: string }) => {
           {truncateAddress(address)}
         </button>
       ) : (
-        !loading && (
+        !loading &&
+        !wallet && (
           <button className="btn btn-primary text-white" onClick={login}>
             {text || "Login"}
           </button>
