@@ -24,6 +24,27 @@ contract ZKPVerifier is IZKPVerifier, Ownable {
         uint256[2][2] calldata b,
         uint256[2] calldata c
     ) public override returns (bool) {
+        require(
+            requestValidators[requestId] != ICircuitValidator(address(0)),
+            "validator is not set for this request id"
+        ); // validator exists
+        require(requestQueries[requestId].queryHash != 0, "query is not set for this request id"); // query exists
+
+        _beforeProofSubmit(requestId, inputs, requestValidators[requestId]);
+
+        require(
+            requestValidators[requestId].verify(
+                inputs,
+                a,
+                b,
+                c,
+                requestQueries[requestId].queryHash
+            ),
+            "proof response is not valid"
+        );
+
+        proofs[msg.sender][requestId] = true; // user provided a valid proof for request
+
         _afterProofSubmit(requestId, inputs, requestValidators[requestId]);
         return true;
     }

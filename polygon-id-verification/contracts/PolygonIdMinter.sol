@@ -17,7 +17,7 @@ contract PolygonIdMinter is ERC2771Context, ZKPVerifier {
     mapping(uint256 => address) public idToAddress;
     mapping(address => uint256) public addressToId;
 
-    uint256 public TOKEN_AMOUNT_FOR_AIRDROP_PER_ID = 5 * 10**18; // Modify if the decimals of ERC20 token are not 18
+    uint256 public TOKEN_AMOUNT_FOR_AIRDROP_PER_ID = 5 * 10 ** 18; // Modify if the decimals of ERC20 token are not 18
 
     IMintableERC20 public token;
 
@@ -46,7 +46,20 @@ contract PolygonIdMinter is ERC2771Context, ZKPVerifier {
         uint256[] memory inputs,
         ICircuitValidator validator
     ) internal override {
-        token.mint(TOKEN_AMOUNT_FOR_AIRDROP_PER_ID, _msgSender());
+        require(
+            requestId == TRANSFER_REQUEST_ID && addressToId[_msgSender()] == 0,
+            "proof can not be submitted more than once"
+        );
+
+        // get user id
+        uint256 id = inputs[1];
+        // additional check didn't get airdrop tokens before
+        if (idToAddress[id] == address(0) && addressToId[_msgSender()] == 0) {
+            token.mint(TOKEN_AMOUNT_FOR_AIRDROP_PER_ID, _msgSender());
+            addressToId[_msgSender()] = id;
+            idToAddress[id] = _msgSender();
+        }
+
     }
 
     function _msgSender() internal view virtual override(Context, ERC2771Context) returns (address sender) {

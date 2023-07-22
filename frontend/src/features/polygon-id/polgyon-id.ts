@@ -220,7 +220,12 @@ export const getPolygonIdWallet = async (config: {
       circuitStorage,
     });
 
-    console.log("proofService", proofService);
+    console.log("proofService", {
+      proofReqSig,
+      userDID: props.userDID,
+      credsToChooseForZKPReq: credsToChooseForZKPReq[0],
+    });
+
     const proof = await proofService.generateProof(
       proofReqSig,
       props.userDID,
