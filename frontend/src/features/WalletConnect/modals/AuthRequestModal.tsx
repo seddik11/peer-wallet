@@ -35,18 +35,22 @@ export default function AuthRequestModal() {
   // Handle approve action (logic varies based on request method)
   async function onApprove() {
     if (request && address) {
-      const signature = await eip155Wallets[address]?.signMessage(message);
-      if (!signature) throw new Error("Failed to sign message");
-      await web3wallet.respondAuthRequest(
-        {
-          id: request.id,
-          signature: {
-            s: signature,
-            t: "eip191",
+      try {
+        const signature = await eip155Wallets[address]?.signMessage(message);
+        if (!signature) throw new Error("Failed to sign message");
+        await web3wallet.respondAuthRequest(
+          {
+            id: request.id,
+            signature: {
+              s: signature,
+              t: "eip191",
+            },
           },
-        },
-        iss
-      );
+          iss
+        );
+      } catch (error) {
+        if (/No matching key/i.test((error as Error).message)) return;
+      }
       close();
     }
   }
@@ -54,13 +58,17 @@ export default function AuthRequestModal() {
   // Handle reject action
   async function onReject() {
     if (request) {
-      await web3wallet.respondAuthRequest(
-        {
-          id: request.id,
-          error: getSdkError("USER_REJECTED"),
-        },
-        iss
-      );
+      try {
+        await web3wallet.respondAuthRequest(
+          {
+            id: request.id,
+            error: getSdkError("USER_REJECTED"),
+          },
+          iss
+        );
+      } catch (error) {
+        if (/No matching key/i.test((error as Error).message)) return;
+      }
       close();
     }
   }
