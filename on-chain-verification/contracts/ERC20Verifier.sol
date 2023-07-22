@@ -36,6 +36,8 @@ contract ERC20Verifier is ERC20, ZKPVerifier, ERC20Permit, ERC20Votes, SismoConn
 
     constructor(string memory name_, string memory symbol_)
     ERC20(name_, symbol_)
+    ERC20Permit(name_)
+    SismoConnect(buildConfig(_appId, _isImpersonationMode)) // <--- Sismo Connect constructor
     {}
     // SISMO
     function claimWithSismo(bytes memory response) public {
@@ -112,5 +114,16 @@ contract ERC20Verifier is ERC20, ZKPVerifier, ERC20Permit, ERC20Votes, SismoConn
         uint256 /* amount */
     ) internal view override {}
 
-    function _afterTokenTransfer(address from, address to, uint256 amount) internal override {}
+    function _afterTokenTransfer(address from, address to, uint256 amount) internal override(ERC20, ERC20Votes) {
+        super._afterTokenTransfer(from, to, amount);
+    }
+
+    function _mint(address account, uint256 amount) internal virtual override(ERC20, ERC20Votes) {
+        super._mint(account, amount);
+    }
+
+    function _burn(address account, uint256 amount) internal virtual override(ERC20, ERC20Votes) {
+        super._burn(account, amount);
+    }
+
 }
