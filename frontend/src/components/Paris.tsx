@@ -42,7 +42,7 @@ function Home() {
 
   return (
     <div className="App min-h-screen bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500">
-      <ParisNavbar />
+      <ParisNavbar address={address} />
       <div className="flex flex-col items-center py-6">
         <main className="flex flex-col items-center mt-10">
           <div className="flex gap-4 items-center">
@@ -124,14 +124,12 @@ const Participate = () => (
   </>
 );
 
-const ParisNavbar = () => (
+const ParisNavbar = ({ address }: any) => (
   <div className="navbar">
     <div className="navbar-start">
       <a className="btn btn-ghost normal-case text-xl">Paris</a>
     </div>
     <div className="navbar-center hidden lg:flex"></div>
-    <div className="navbar-end">
-      <ConnectButton />
-    </div>
+    <div className="navbar-end">{address && <ConnectButton />}</div>
   </div>
 );
