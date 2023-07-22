@@ -37,7 +37,7 @@ const Credentials = () => {
               </div>
             ) : (
               <>
-                <div className="text-lg text-center">Noun DAO membership</div>
+                <div className="text-lg text-center">Verify Noun DAO membership</div>
                 <div
                   className="btn btn-primary text-white"
                   onClick={() => setOpenModal("sismo")}
