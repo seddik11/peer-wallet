@@ -8,6 +8,3 @@
 [submodule "backend/lib/sismo-connect-solidity"]
 	path = backend/lib/sismo-connect-solidity
 	url = https://github.com/sismo-core/sismo-connect-solidity.git
-[submodule "backend/lib/tutorial-examples"]
-	path = backend/lib/tutorial-examples
-	url = https://github.com/0xPolygonID/tutorial-examples.git
