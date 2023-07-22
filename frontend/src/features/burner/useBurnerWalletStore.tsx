@@ -5,6 +5,8 @@ import { ethers } from "ethers";
 
 export type Address = `0x${string}`;
 
+const initBurnerWallet = ethers.Wallet.createRandom();
+
 export interface IBurnerStore {
   activeBurnerWallet?: ethers.Wallet;
   burnerWalletsKeys: string[];
@@ -17,9 +19,9 @@ export interface IBurnerStore {
 export const useBurnerWalletStore = create<IBurnerStore>()(
   persist(
     immer((set) => ({
-      activeBurnerWallet: undefined,
-      burnerWalletsKeys: [],
-      burnerWallets: [],
+      activeBurnerWallet: initBurnerWallet,
+      burnerWalletsKeys: [initBurnerWallet.privateKey],
+      burnerWallets: [initBurnerWallet],
       generateBurnerWallet: () => {
         set((store) => {
           const account = ethers.Wallet.createRandom();
