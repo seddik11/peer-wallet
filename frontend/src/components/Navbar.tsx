@@ -1,4 +1,4 @@
-import LoginButton from "./LoginButton";
+import BiconomyLoginButton from "./BiconomyLoginButton";
 
 const Navbar = () => {
   return (
@@ -8,7 +8,7 @@ const Navbar = () => {
       </div>
       <div className="navbar-center hidden lg:flex" />
       <div className="navbar-end">
-        <LoginButton />
+        <BiconomyLoginButton />
       </div>
     </div>
   );
