@@ -6,6 +6,7 @@ import {
 import { encodeAbiParameters } from "viem";
 import { useBurnerWalletStore } from "@/features/burner/useBurnerWalletStore";
 import { useState } from "react";
+import { useCredentialsStore } from "@/store/credentials";
 
 const sismoConnectConfig: SismoConnectConfig = {
   appId: "0xf4977993e52606cfd67b7a1cde717069",
@@ -34,10 +35,17 @@ export const signMessage = (address: `0x${string}` | undefined) => {
 
 export const SismoButton = () => {
   const [sismoResponse, setSismoResponse] = useState<string>("");
+  const { setSismoProof } = useCredentialsStore();
   const wallet = useBurnerWalletStore((s) => s.activeBurnerWallet);
   if (!wallet) return <div>Select active wallet before using sismo</div>;
+
   return (
     <>
+      <div className="text-lg font-bold">Claim your Sismo proof</div>
+      <div className="break-all p-4 max-h-80 overflow-auto bg-slate-200 rounded-md my-5">
+        {sismoResponse}
+      </div>
+
       <SismoConnectButton
         // the client config created
         config={sismoConnectConfig}
@@ -51,13 +59,11 @@ export const SismoButton = () => {
         onResponseBytes={(responseBytes: string) => {
           console.log("hello simsmo", responseBytes);
           setSismoResponse(responseBytes);
+          setSismoProof(responseBytes);
         }}
         // Some text to display on the button
         text={"Claim with Sismo"}
       />
-      <div>
-        <pre>{JSON.stringify(sismoResponse, null, 2)}</pre>
-      </div>
     </>
   );
 };

@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import Card from "./Card";
 import truncateAddress from "@/utils/truncateAddress";
 import { getSdkError } from "@walletconnect/utils";
+import { useWcModalStore } from "@/features/WalletConnect/hooks/useWcModalStore";
 
 const ConnectedDapps = ({ initialized }: any) => {
   const [activeSessions, setActiveSessions] = useState<any>([]);
@@ -11,6 +12,8 @@ const ConnectedDapps = ({ initialized }: any) => {
   const getActiveSessions = useCallback(() => {
     setActiveSessions(Object.values(web3wallet?.getActiveSessions() || {}));
   }, []);
+
+  const { isOpen } = useWcModalStore();
 
   async function disconnect(index: number) {
     try {
@@ -27,25 +30,18 @@ const ConnectedDapps = ({ initialized }: any) => {
       if (/No matching key/i.test((error as Error).message)) return;
       console.error(error);
     }
-
     getActiveSessions();
   }
 
   useEffect(() => {
-    if (initialized) getActiveSessions();
-  }, [getActiveSessions, initialized]);
-
-  useEffect(() => {
-    if (initialized) {
-      web3wallet.on("session_request", getActiveSessions);
-    }
-  }, [getActiveSessions, initialized]);
+    if (initialized && !isOpen) getActiveSessions();
+  }, [getActiveSessions, initialized, isOpen]);
 
   return (
     <div>
       <div>Connected Dapps</div>
       <div className="mt-2 mb-10 gap-4 flex flex-col">
-        {activeSessions.length > 0 ? (
+        {activeSessions?.length > 0 ? (
           activeSessions.map(({ peer, namespaces }: any, i: number) => (
             <Card key={i}>
               <div className="flex gap-4 items-center">
@@ -62,7 +58,7 @@ const ConnectedDapps = ({ initialized }: any) => {
                 </div>
               </div>
               <div
-                className="btn btn-primary text-white m-2"
+                className="btn btn-secondary m-2"
                 onClick={() => disconnect(i)}
               >
                 Disconnect
