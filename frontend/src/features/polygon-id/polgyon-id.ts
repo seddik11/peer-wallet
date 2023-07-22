@@ -43,10 +43,15 @@ import {
   ICircuitStorage,
   ProofService,
   AuthHandler,
+  ZeroKnowledgeProofRequest,
 } from "@0xpolygonid/js-sdk";
 
 import { proving } from "@iden3/js-jwz";
 import { DID } from "@iden3/js-iden3-core";
+import {
+  createKYCAgeCredentialRequest,
+  ZKPREQUEST,
+} from "@/features/polygon-id/example-request";
 
 export { W3CCredential } from "@0xpolygonid/js-sdk";
 export { byteEncoder } from "@0xpolygonid/js-sdk";
@@ -197,6 +202,39 @@ export const getPolygonIdWallet = async (config: {
     console.log("authResponseJson", authResponseJson);
   };
 
+  const handleZKP = async (props: { userDID: DID }) => {
+    if (!circuitStorage) throw new Error("circuitStorage is not initialized");
+    console.log("handleZKP", props.userDID.toString());
+    const proofReqSig: ZeroKnowledgeProofRequest =
+      createKYCAgeCredentialRequest(CircuitId.AtomicQuerySigV2);
+
+    let credsToChooseForZKPReq = await credentialWallet.findByQuery(
+      proofReqSig.query
+    );
+
+    console.log("credsToChooseForZKPReq", credsToChooseForZKPReq);
+    const proofService = initProofService({
+      identityWallet,
+      credentialWallet,
+      stateStorage: dataStorage.states,
+      circuitStorage,
+    });
+
+    console.log("proofService", proofService);
+    const proof = await proofService.generateProof(
+      proofReqSig,
+      props.userDID,
+      credsToChooseForZKPReq[0]
+    );
+
+    console.log("proof", proof);
+
+    return {
+      proof,
+      requestId: proofReqSig.id,
+    };
+  };
+
   return {
     did,
     initCircuits,
@@ -204,6 +242,7 @@ export const getPolygonIdWallet = async (config: {
     handleAuthOffer,
     identityWallet,
     credentialWallet,
+    handleZKP,
   };
 };
 
