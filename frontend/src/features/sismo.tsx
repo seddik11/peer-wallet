@@ -111,7 +111,7 @@ export const SismoButton = () => {
 //     responseBytes && chain
 //       ? {
 //           address:
-//             "0xc194948f79639EAd8B90F0fB90A4fee8bC3FFAC8" as `0x${string}}`,
+//             "0x784CC2d483c77C7A7CFDDC07Ff9BD350b4Dea488" as `0x${string}}`,
 //           abi: [...AirdropABI, ...errorsABI],
 //           functionName: "claimWithSismo",
 //           args: [responseBytes],
