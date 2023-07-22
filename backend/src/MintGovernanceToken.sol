@@ -9,9 +9,9 @@ import "./PeerGovernanceToken.sol";
 
 //POLYGON ID IMPORTS
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
-import "/Users/raigal/tmp/ETHGlobalParis/Try6/peer-wallet/backend/lib/tutorial-examples/on-chain-verification/contracts/lib/GenesisUtils.sol";
-import "/Users/raigal/tmp/ETHGlobalParis/Try6/peer-wallet/backend/lib/tutorial-examples/on-chain-verification/contracts/interfaces/ICircuitValidator.sol";
-import "/Users/raigal/tmp/ETHGlobalParis/Try6/peer-wallet/backend/lib/tutorial-examples/on-chain-verification/contracts/verifiers/ZKPVerifier.sol";
+import "../lib/tutorial-examples/on-chain-verification/contracts/lib/GenesisUtils.sol";
+import "../lib/tutorial-examples/on-chain-verification/contracts/interfaces/ICircuitValidator.sol";
+import "../lib/tutorial-examples/on-chain-verification/contracts/verifiers/ZKPVerifier.sol";
 
 
 /*
@@ -22,7 +22,7 @@ import "/Users/raigal/tmp/ETHGlobalParis/Try6/peer-wallet/backend/lib/tutorial-e
  * It will be used to demonstrate how to integrate Sismo Connect
  */
 contract MintGovernanceToken is SismoConnect, ZKPVerifier {
-  
+
   // SISMO
   error AlreadyClaimed();
   using SismoConnectHelper for SismoConnectVerifiedResult;
@@ -34,7 +34,7 @@ contract MintGovernanceToken is SismoConnect, ZKPVerifier {
   bool private _isImpersonationMode = true;
   PeerGovernanceToken public peerToken;
 
-  //POLYGON 
+  //POLYGON
   uint64 public constant TRANSFER_REQUEST_ID = 1;
   // define the amount of token to be airdropped per user
   uint256 public TOKEN_AMOUNT_FOR_AIRDROP_PER_ID = 100 * 10 ** 18;
@@ -88,7 +88,7 @@ contract MintGovernanceToken is SismoConnect, ZKPVerifier {
     uint256[] memory inputs,
     ICircuitValidator validator
     ) internal view override {
-        // check that the challenge input of the proof is equal to the msg.sender 
+        // check that the challenge input of the proof is equal to the msg.sender
         address addr = GenesisUtils.int256ToAddress(
             inputs[validator.getChallengeInputIndex()]
         );
