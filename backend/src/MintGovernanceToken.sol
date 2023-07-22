@@ -9,8 +9,6 @@ import "./PeerGovernanceToken.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/metatx/ERC2771Context.sol";
 
-
-
 interface IMintableERC20 is IERC20 {
     function mint(address _to, uint256 _amount) external returns (bool);
 }
