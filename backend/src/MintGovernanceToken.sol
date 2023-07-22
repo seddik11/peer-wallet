@@ -9,7 +9,7 @@ import "./PeerGovernanceToken.sol";
 
 //POLYGON ID IMPORTS
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
-import "https://github.com/0xPolygonID/tutorial-examples/blob/6052cdff6ecdb9b0fe5a297bace7c81b1d03c95f/on-chain-verification/contracts/lib/GenesisUtils.sol#L4";
+import "https://github.com/0xPolygonID/tutorial-examples/blob/6052cdff6ecdb9b0fe5a297bace7c81b1d03c95f/on-chain-verification/contracts/lib/GenesisUtils.sol";
 import "interfaces/ICircuitValidator.sol";
 import "verifiers/ZKPVerifier.sol";
 
