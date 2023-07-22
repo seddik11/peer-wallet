@@ -86,12 +86,7 @@ export const useGetPolygonIdVcs = () => {
     queryFn: async () => {
       if (!wallet.data) throw new Error("No polygonId");
       const creds = await wallet.data.credentialWallet.list();
-      return creds.sort((a, b) => {
-        return (
-          z.coerce.date().parse(b.issuanceDate).getTime() -
-          z.coerce.date().parse(a.issuanceDate).getTime()
-        );
-      });
+      return creds.filter((c) => !c.type.includes("AuthBJJCredential"));
     },
   });
 };

@@ -7,8 +7,7 @@ import { toast } from "react-toastify";
 import { useQueryClient } from "@tanstack/react-query";
 
 export const PolygonIdWallet = () => {
-  const { wallet, handleAuthQrOffer, handleCredentialQrOffer } =
-    usePolygonIdWallet();
+  const { wallet } = usePolygonIdWallet();
 
   const [authQr, setAuthQr] = useState<string>();
   const [credentialQr, setCredentialQr] = useState<string>();
