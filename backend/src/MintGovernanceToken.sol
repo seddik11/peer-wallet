@@ -60,11 +60,10 @@ contract MintGovernanceToken is SismoConnect, ERC2771Context {
     // this request is optional
 
     ClaimRequest[] memory claimRequests = new ClaimRequest[](2);
+    // VAULT
     claimRequests[0] = buildClaim({groupId: 0x95ab1dc5092706c18b43a36a40df0871});
-
+    //NAOUN DAO
     claimRequests[1] = buildClaim({groupId: 0xa4ff29395199edcc63221e5b9b5c202d});
-
-
 
 
     SismoConnectVerifiedResult memory result = verify({
