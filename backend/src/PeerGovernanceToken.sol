@@ -5,7 +5,7 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Votes.sol";
 
-contract PeerGovernanceToken is ERC20, ERC20Permit, ERC20Votes, SismoConnect, ZKPVerifier {
+contract PeerGovernanceToken is ERC20, ERC20Permit, ERC20Votes {
     constructor() ERC20("Peer Governance Token", "PGT") ERC20Permit("PeerVoteToken") {}
 
     // The functions below are overrides required by Solidity.
@@ -16,6 +16,10 @@ contract PeerGovernanceToken is ERC20, ERC20Permit, ERC20Votes, SismoConnect, ZK
     // solhint-disable-next-line func-name-mixedcase
     function CLOCK_MODE() public pure override returns (string memory) {
         return "mode=timestamp";
+    }
+
+    function _afterTokenTransfer(address from, address to, uint256 amount) internal override(ERC20, ERC20Votes) {
+        super._afterTokenTransfer(from, to, amount);
     }
 
     function _mint(address to, uint256 amount) internal override(ERC20, ERC20Votes) {
