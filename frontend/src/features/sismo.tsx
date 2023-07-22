@@ -17,7 +17,7 @@ import { useBurnerWalletStore } from "@/features/burner/useBurnerWalletStore";
 import { useState } from "react";
 import { useCredentialsStore } from "@/store/credentials";
 import { polygonMumbai } from "wagmi/chains";
-import { abi as AirdropABI } from "../../../backend/abi/Airdrop.json";
+import { abi as AirdropABI } from "../../abi/Airdrop.json";
 import {
   errorsABI,
   formatError,
