@@ -8,13 +8,16 @@ import Card from "./Card";
 
 import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { configureChains, createConfig, WagmiConfig } from "wagmi";
-import { goerli } from "wagmi/chains";
+import { goerli, polygonMumbai } from "wagmi/chains";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { publicProvider } from "wagmi/providers/public";
 import { useAccount } from "wagmi";
 import { SismoClaimButton } from "@/features/sismo";
 
-const { chains, publicClient } = configureChains([goerli], [publicProvider()]);
+const { chains, publicClient } = configureChains(
+  [goerli, polygonMumbai],
+  [publicProvider()]
+);
 
 const { connectors } = getDefaultWallets({
   appName: "Paris",

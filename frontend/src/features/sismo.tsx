@@ -1,13 +1,32 @@
 import {
+  useAccount,
+  useConnect,
+  useDisconnect,
+  useNetwork,
+  useSwitchNetwork,
+  usePrepareContractWrite,
+  useContractWrite,
+} from "wagmi";
+import { waitForTransaction } from "@wagmi/core";
+import {
   AuthType,
   SismoConnectButton,
   SismoConnectConfig,
 } from "@sismo-core/sismo-connect-react";
-import { encodeAbiParameters } from "viem";
 import { useBurnerWalletStore } from "@/features/burner/useBurnerWalletStore";
 import { useState } from "react";
 import { useCredentialsStore } from "@/store/credentials";
+import { polygonMumbai } from "wagmi/chains";
+import { abi as AirdropABI } from "../../../backend/abi/Airdrop.json";
+import {
+  errorsABI,
+  formatError,
+  fundMyAccountOnLocalFork,
+  signMessage,
+} from "@/utils/misc";
+import { decodeEventLog, formatEther } from "viem";
 
+const CHAIN = polygonMumbai;
 
 const sismoConnectConfig: SismoConnectConfig = {
   appId: "0xbd06ffac2f190c04306e9f3e35bce454", //PeerWallet App
@@ -26,14 +45,6 @@ const sismoConnectConfig: SismoConnectConfig = {
     ],
   },
 };
-
-export const signMessage = (address: `0x${string}` | undefined) => {
-  return encodeAbiParameters(
-    [{ type: "address", name: "airdropAddress" }],
-    [address as `0x${string}`]
-  );
-};
-
 
 export const SismoButton = () => {
   const [sismoResponse, setSismoResponse] = useState<string>("");
@@ -68,5 +79,74 @@ export const SismoButton = () => {
       />
     </>
   );
+};
 
+export const SismoClaimButton = () => {
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string>("");
+  const [amountClaimed, setAmountClaimed] = useState<string>("");
+  const [responseBytes, setResponseBytes] = useState<string>("");
+  const { address } = useAccount();
+
+  const { switchNetworkAsync, switchNetwork } = useSwitchNetwork();
+
+  const { connect, connectors, isLoading, pendingConnector } = useConnect();
+  const { disconnect } = useDisconnect();
+  const { chain } = useNetwork();
+
+  const contractCallInputs =
+    responseBytes && chain
+      ? {
+          address:
+            "0xc194948f79639EAd8B90F0fB90A4fee8bC3FFAC8" as `0x${string}}`,
+          abi: [...AirdropABI, ...errorsABI],
+          functionName: "claimWithSismo",
+          args: [responseBytes],
+          chain,
+        }
+      : {};
+
+  const { config, error: wagmiSimulateError } =
+    usePrepareContractWrite(contractCallInputs);
+  const { writeAsync } = useContractWrite(config);
+
+  async function claimAirdrop() {
+    if (!address) return;
+    setError("");
+    setLoading(true);
+    try {
+      // Switch to the selected network if not already on it
+      if (chain?.id !== CHAIN.id) await switchNetworkAsync?.(CHAIN.id);
+
+      const tx = await writeAsync?.();
+
+      const txReceipt = tx && (await waitForTransaction({ hash: tx.hash }));
+      if (txReceipt?.status === "success") {
+        const mintEvent = decodeEventLog({
+          abi: AirdropABI,
+          data: txReceipt.logs[0]?.data,
+          topics: txReceipt.logs[0]?.topics,
+        });
+        const args = mintEvent?.args as {
+          value: string;
+        };
+        const ethAmount = formatEther(BigInt(args.value));
+        setAmountClaimed(ethAmount);
+      }
+    } catch (e: any) {
+      setError(formatError(e));
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  return (
+    <button
+      className="btn btn-primary"
+      disabled={loading || Boolean(error)}
+      onClick={() => claimAirdrop()}
+    >
+      {!loading ? "Claim" : "Claiming..."}
+    </button>
+  );
 };
