@@ -53,21 +53,14 @@ export declare namespace ICircuitValidator {
   };
 }
 
-export interface ERC20VerifierInterface extends utils.Interface {
+export interface PolygonIdMinterInterface extends utils.Interface {
   functions: {
     "TOKEN_AMOUNT_FOR_AIRDROP_PER_ID()": FunctionFragment;
     "TRANSFER_REQUEST_ID()": FunctionFragment;
     "addressToId(address)": FunctionFragment;
-    "allowance(address,address)": FunctionFragment;
-    "approve(address,uint256)": FunctionFragment;
-    "balanceOf(address)": FunctionFragment;
-    "decimals()": FunctionFragment;
-    "decreaseAllowance(address,uint256)": FunctionFragment;
     "getSupportedRequests()": FunctionFragment;
     "getZKPRequest(uint64)": FunctionFragment;
     "idToAddress(uint256)": FunctionFragment;
-    "increaseAllowance(address,uint256)": FunctionFragment;
-    "name()": FunctionFragment;
     "owner()": FunctionFragment;
     "proofs(address,uint64)": FunctionFragment;
     "renounceOwnership()": FunctionFragment;
@@ -76,10 +69,7 @@ export interface ERC20VerifierInterface extends utils.Interface {
     "setZKPRequest(uint64,address,uint256,uint256,uint256,uint256[])": FunctionFragment;
     "setZKPRequestRaw(uint64,address,uint256,uint256,uint256,uint256[],uint256)": FunctionFragment;
     "submitZKPResponse(uint64,uint256[],uint256[2],uint256[2][2],uint256[2])": FunctionFragment;
-    "symbol()": FunctionFragment;
-    "totalSupply()": FunctionFragment;
-    "transfer(address,uint256)": FunctionFragment;
-    "transferFrom(address,address,uint256)": FunctionFragment;
+    "token()": FunctionFragment;
     "transferOwnership(address)": FunctionFragment;
   };
 
@@ -88,16 +78,9 @@ export interface ERC20VerifierInterface extends utils.Interface {
       | "TOKEN_AMOUNT_FOR_AIRDROP_PER_ID"
       | "TRANSFER_REQUEST_ID"
       | "addressToId"
-      | "allowance"
-      | "approve"
-      | "balanceOf"
-      | "decimals"
-      | "decreaseAllowance"
       | "getSupportedRequests"
       | "getZKPRequest"
       | "idToAddress"
-      | "increaseAllowance"
-      | "name"
       | "owner"
       | "proofs"
       | "renounceOwnership"
@@ -106,10 +89,7 @@ export interface ERC20VerifierInterface extends utils.Interface {
       | "setZKPRequest"
       | "setZKPRequestRaw"
       | "submitZKPResponse"
-      | "symbol"
-      | "totalSupply"
-      | "transfer"
-      | "transferFrom"
+      | "token"
       | "transferOwnership"
   ): FunctionFragment;
 
@@ -123,20 +103,6 @@ export interface ERC20VerifierInterface extends utils.Interface {
   ): string;
   encodeFunctionData(functionFragment: "addressToId", values: [string]): string;
   encodeFunctionData(
-    functionFragment: "allowance",
-    values: [string, string]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "approve",
-    values: [string, BigNumberish]
-  ): string;
-  encodeFunctionData(functionFragment: "balanceOf", values: [string]): string;
-  encodeFunctionData(functionFragment: "decimals", values?: undefined): string;
-  encodeFunctionData(
-    functionFragment: "decreaseAllowance",
-    values: [string, BigNumberish]
-  ): string;
-  encodeFunctionData(
     functionFragment: "getSupportedRequests",
     values?: undefined
   ): string;
@@ -148,11 +114,6 @@ export interface ERC20VerifierInterface extends utils.Interface {
     functionFragment: "idToAddress",
     values: [BigNumberish]
   ): string;
-  encodeFunctionData(
-    functionFragment: "increaseAllowance",
-    values: [string, BigNumberish]
-  ): string;
-  encodeFunctionData(functionFragment: "name", values?: undefined): string;
   encodeFunctionData(functionFragment: "owner", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "proofs",
@@ -203,19 +164,7 @@ export interface ERC20VerifierInterface extends utils.Interface {
       [BigNumberish, BigNumberish]
     ]
   ): string;
-  encodeFunctionData(functionFragment: "symbol", values?: undefined): string;
-  encodeFunctionData(
-    functionFragment: "totalSupply",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "transfer",
-    values: [string, BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "transferFrom",
-    values: [string, string, BigNumberish]
-  ): string;
+  encodeFunctionData(functionFragment: "token", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "transferOwnership",
     values: [string]
@@ -233,14 +182,6 @@ export interface ERC20VerifierInterface extends utils.Interface {
     functionFragment: "addressToId",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "allowance", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "approve", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "decimals", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "decreaseAllowance",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(
     functionFragment: "getSupportedRequests",
     data: BytesLike
@@ -253,11 +194,6 @@ export interface ERC20VerifierInterface extends utils.Interface {
     functionFragment: "idToAddress",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(
-    functionFragment: "increaseAllowance",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "name", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "proofs", data: BytesLike): Result;
   decodeFunctionResult(
@@ -284,43 +220,18 @@ export interface ERC20VerifierInterface extends utils.Interface {
     functionFragment: "submitZKPResponse",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "symbol", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "totalSupply",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "transfer", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "transferFrom",
-    data: BytesLike
-  ): Result;
+  decodeFunctionResult(functionFragment: "token", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "transferOwnership",
     data: BytesLike
   ): Result;
 
   events: {
-    "Approval(address,address,uint256)": EventFragment;
     "OwnershipTransferred(address,address)": EventFragment;
-    "Transfer(address,address,uint256)": EventFragment;
   };
 
-  getEvent(nameOrSignatureOrTopic: "Approval"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "OwnershipTransferred"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "Transfer"): EventFragment;
 }
-
-export interface ApprovalEventObject {
-  owner: string;
-  spender: string;
-  value: BigNumber;
-}
-export type ApprovalEvent = TypedEvent<
-  [string, string, BigNumber],
-  ApprovalEventObject
->;
-
-export type ApprovalEventFilter = TypedEventFilter<ApprovalEvent>;
 
 export interface OwnershipTransferredEventObject {
   previousOwner: string;
@@ -334,24 +245,12 @@ export type OwnershipTransferredEvent = TypedEvent<
 export type OwnershipTransferredEventFilter =
   TypedEventFilter<OwnershipTransferredEvent>;
 
-export interface TransferEventObject {
-  from: string;
-  to: string;
-  value: BigNumber;
-}
-export type TransferEvent = TypedEvent<
-  [string, string, BigNumber],
-  TransferEventObject
->;
-
-export type TransferEventFilter = TypedEventFilter<TransferEvent>;
-
-export interface ERC20Verifier extends BaseContract {
+export interface PolygonIdMinter extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
 
-  interface: ERC20VerifierInterface;
+  interface: PolygonIdMinterInterface;
 
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,
@@ -381,28 +280,6 @@ export interface ERC20Verifier extends BaseContract {
 
     addressToId(arg0: string, overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    allowance(
-      owner: string,
-      spender: string,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
-
-    approve(
-      spender: string,
-      amount: BigNumberish,
-      overrides?: Overrides & { from?: string }
-    ): Promise<ContractTransaction>;
-
-    balanceOf(account: string, overrides?: CallOverrides): Promise<[BigNumber]>;
-
-    decimals(overrides?: CallOverrides): Promise<[number]>;
-
-    decreaseAllowance(
-      spender: string,
-      subtractedValue: BigNumberish,
-      overrides?: Overrides & { from?: string }
-    ): Promise<ContractTransaction>;
-
     getSupportedRequests(
       overrides?: CallOverrides
     ): Promise<[BigNumber[]] & { arr: BigNumber[] }>;
@@ -416,14 +293,6 @@ export interface ERC20Verifier extends BaseContract {
       arg0: BigNumberish,
       overrides?: CallOverrides
     ): Promise<[string]>;
-
-    increaseAllowance(
-      spender: string,
-      addedValue: BigNumberish,
-      overrides?: Overrides & { from?: string }
-    ): Promise<ContractTransaction>;
-
-    name(overrides?: CallOverrides): Promise<[string]>;
 
     owner(overrides?: CallOverrides): Promise<[string]>;
 
@@ -485,22 +354,7 @@ export interface ERC20Verifier extends BaseContract {
       overrides?: Overrides & { from?: string }
     ): Promise<ContractTransaction>;
 
-    symbol(overrides?: CallOverrides): Promise<[string]>;
-
-    totalSupply(overrides?: CallOverrides): Promise<[BigNumber]>;
-
-    transfer(
-      to: string,
-      amount: BigNumberish,
-      overrides?: Overrides & { from?: string }
-    ): Promise<ContractTransaction>;
-
-    transferFrom(
-      from: string,
-      to: string,
-      amount: BigNumberish,
-      overrides?: Overrides & { from?: string }
-    ): Promise<ContractTransaction>;
+    token(overrides?: CallOverrides): Promise<[string]>;
 
     transferOwnership(
       newOwner: string,
@@ -516,28 +370,6 @@ export interface ERC20Verifier extends BaseContract {
 
   addressToId(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
 
-  allowance(
-    owner: string,
-    spender: string,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
-
-  approve(
-    spender: string,
-    amount: BigNumberish,
-    overrides?: Overrides & { from?: string }
-  ): Promise<ContractTransaction>;
-
-  balanceOf(account: string, overrides?: CallOverrides): Promise<BigNumber>;
-
-  decimals(overrides?: CallOverrides): Promise<number>;
-
-  decreaseAllowance(
-    spender: string,
-    subtractedValue: BigNumberish,
-    overrides?: Overrides & { from?: string }
-  ): Promise<ContractTransaction>;
-
   getSupportedRequests(overrides?: CallOverrides): Promise<BigNumber[]>;
 
   getZKPRequest(
@@ -546,14 +378,6 @@ export interface ERC20Verifier extends BaseContract {
   ): Promise<ICircuitValidator.CircuitQueryStructOutput>;
 
   idToAddress(arg0: BigNumberish, overrides?: CallOverrides): Promise<string>;
-
-  increaseAllowance(
-    spender: string,
-    addedValue: BigNumberish,
-    overrides?: Overrides & { from?: string }
-  ): Promise<ContractTransaction>;
-
-  name(overrides?: CallOverrides): Promise<string>;
 
   owner(overrides?: CallOverrides): Promise<string>;
 
@@ -615,22 +439,7 @@ export interface ERC20Verifier extends BaseContract {
     overrides?: Overrides & { from?: string }
   ): Promise<ContractTransaction>;
 
-  symbol(overrides?: CallOverrides): Promise<string>;
-
-  totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
-
-  transfer(
-    to: string,
-    amount: BigNumberish,
-    overrides?: Overrides & { from?: string }
-  ): Promise<ContractTransaction>;
-
-  transferFrom(
-    from: string,
-    to: string,
-    amount: BigNumberish,
-    overrides?: Overrides & { from?: string }
-  ): Promise<ContractTransaction>;
+  token(overrides?: CallOverrides): Promise<string>;
 
   transferOwnership(
     newOwner: string,
@@ -646,28 +455,6 @@ export interface ERC20Verifier extends BaseContract {
 
     addressToId(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
 
-    allowance(
-      owner: string,
-      spender: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    approve(
-      spender: string,
-      amount: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
-
-    balanceOf(account: string, overrides?: CallOverrides): Promise<BigNumber>;
-
-    decimals(overrides?: CallOverrides): Promise<number>;
-
-    decreaseAllowance(
-      spender: string,
-      subtractedValue: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
-
     getSupportedRequests(overrides?: CallOverrides): Promise<BigNumber[]>;
 
     getZKPRequest(
@@ -676,14 +463,6 @@ export interface ERC20Verifier extends BaseContract {
     ): Promise<ICircuitValidator.CircuitQueryStructOutput>;
 
     idToAddress(arg0: BigNumberish, overrides?: CallOverrides): Promise<string>;
-
-    increaseAllowance(
-      spender: string,
-      addedValue: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
-
-    name(overrides?: CallOverrides): Promise<string>;
 
     owner(overrides?: CallOverrides): Promise<string>;
 
@@ -743,22 +522,7 @@ export interface ERC20Verifier extends BaseContract {
       overrides?: CallOverrides
     ): Promise<boolean>;
 
-    symbol(overrides?: CallOverrides): Promise<string>;
-
-    totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
-
-    transfer(
-      to: string,
-      amount: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
-
-    transferFrom(
-      from: string,
-      to: string,
-      amount: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
+    token(overrides?: CallOverrides): Promise<string>;
 
     transferOwnership(
       newOwner: string,
@@ -767,17 +531,6 @@ export interface ERC20Verifier extends BaseContract {
   };
 
   filters: {
-    "Approval(address,address,uint256)"(
-      owner?: string | null,
-      spender?: string | null,
-      value?: null
-    ): ApprovalEventFilter;
-    Approval(
-      owner?: string | null,
-      spender?: string | null,
-      value?: null
-    ): ApprovalEventFilter;
-
     "OwnershipTransferred(address,address)"(
       previousOwner?: string | null,
       newOwner?: string | null
@@ -786,17 +539,6 @@ export interface ERC20Verifier extends BaseContract {
       previousOwner?: string | null,
       newOwner?: string | null
     ): OwnershipTransferredEventFilter;
-
-    "Transfer(address,address,uint256)"(
-      from?: string | null,
-      to?: string | null,
-      value?: null
-    ): TransferEventFilter;
-    Transfer(
-      from?: string | null,
-      to?: string | null,
-      value?: null
-    ): TransferEventFilter;
   };
 
   estimateGas: {
@@ -807,28 +549,6 @@ export interface ERC20Verifier extends BaseContract {
     TRANSFER_REQUEST_ID(overrides?: CallOverrides): Promise<BigNumber>;
 
     addressToId(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
-
-    allowance(
-      owner: string,
-      spender: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    approve(
-      spender: string,
-      amount: BigNumberish,
-      overrides?: Overrides & { from?: string }
-    ): Promise<BigNumber>;
-
-    balanceOf(account: string, overrides?: CallOverrides): Promise<BigNumber>;
-
-    decimals(overrides?: CallOverrides): Promise<BigNumber>;
-
-    decreaseAllowance(
-      spender: string,
-      subtractedValue: BigNumberish,
-      overrides?: Overrides & { from?: string }
-    ): Promise<BigNumber>;
 
     getSupportedRequests(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -841,14 +561,6 @@ export interface ERC20Verifier extends BaseContract {
       arg0: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
-
-    increaseAllowance(
-      spender: string,
-      addedValue: BigNumberish,
-      overrides?: Overrides & { from?: string }
-    ): Promise<BigNumber>;
-
-    name(overrides?: CallOverrides): Promise<BigNumber>;
 
     owner(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -902,22 +614,7 @@ export interface ERC20Verifier extends BaseContract {
       overrides?: Overrides & { from?: string }
     ): Promise<BigNumber>;
 
-    symbol(overrides?: CallOverrides): Promise<BigNumber>;
-
-    totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
-
-    transfer(
-      to: string,
-      amount: BigNumberish,
-      overrides?: Overrides & { from?: string }
-    ): Promise<BigNumber>;
-
-    transferFrom(
-      from: string,
-      to: string,
-      amount: BigNumberish,
-      overrides?: Overrides & { from?: string }
-    ): Promise<BigNumber>;
+    token(overrides?: CallOverrides): Promise<BigNumber>;
 
     transferOwnership(
       newOwner: string,
@@ -939,31 +636,6 @@ export interface ERC20Verifier extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    allowance(
-      owner: string,
-      spender: string,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    approve(
-      spender: string,
-      amount: BigNumberish,
-      overrides?: Overrides & { from?: string }
-    ): Promise<PopulatedTransaction>;
-
-    balanceOf(
-      account: string,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    decimals(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    decreaseAllowance(
-      spender: string,
-      subtractedValue: BigNumberish,
-      overrides?: Overrides & { from?: string }
-    ): Promise<PopulatedTransaction>;
-
     getSupportedRequests(
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
@@ -977,14 +649,6 @@ export interface ERC20Verifier extends BaseContract {
       arg0: BigNumberish,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
-
-    increaseAllowance(
-      spender: string,
-      addedValue: BigNumberish,
-      overrides?: Overrides & { from?: string }
-    ): Promise<PopulatedTransaction>;
-
-    name(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     owner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
@@ -1038,22 +702,7 @@ export interface ERC20Verifier extends BaseContract {
       overrides?: Overrides & { from?: string }
     ): Promise<PopulatedTransaction>;
 
-    symbol(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    totalSupply(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    transfer(
-      to: string,
-      amount: BigNumberish,
-      overrides?: Overrides & { from?: string }
-    ): Promise<PopulatedTransaction>;
-
-    transferFrom(
-      from: string,
-      to: string,
-      amount: BigNumberish,
-      overrides?: Overrides & { from?: string }
-    ): Promise<PopulatedTransaction>;
+    token(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     transferOwnership(
       newOwner: string,
