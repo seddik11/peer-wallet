@@ -192,7 +192,7 @@ export default function Home() {
               config={sismoConnectConfig}
               // the auth request we want to make
               // here we want the proof of a Sismo Vault ownership from our users
-              auths={[{ authType: AuthType.VAULT }]}
+              auths={[{ authType: AuthType.VAULT }, {authType: AuthType.EVM_ACCOUNT}]}
               // we ask the user to sign a message
               // it will be used onchain to prevent frontrunning
               signature={{ message: signMessage(address) }}

@@ -206,7 +206,7 @@ export const getPolygonIdWallet = async (config: {
     if (!circuitStorage) throw new Error("circuitStorage is not initialized");
     console.log("handleZKP", props.userDID.toString());
     const proofReqSig: ZeroKnowledgeProofRequest =
-      createKYCAgeCredentialRequest(CircuitId.AtomicQuerySigV2);
+      createKYCAgeCredentialRequest(CircuitId.AtomicQuerySigV2OnChain);
 
     let credsToChooseForZKPReq = await credentialWallet.findByQuery(
       proofReqSig.query
@@ -220,12 +220,24 @@ export const getPolygonIdWallet = async (config: {
       circuitStorage,
     });
 
-    console.log("proofService", proofService);
+    console.log("proofService", {
+      proofReqSig,
+      userDID: props.userDID,
+      credsToChooseForZKPReq: credsToChooseForZKPReq[0],
+    });
+
     const proof = await proofService.generateProof(
       proofReqSig,
       props.userDID,
       credsToChooseForZKPReq[0]
     );
+
+    const validated = await proofService.verifyProof(
+      proof,
+      CircuitId.AtomicQuerySigV2OnChain
+    );
+
+    console.log("validated", validated);
 
     console.log("proof", proof);
 
@@ -313,6 +325,25 @@ async function initCircuitStorageFetch(props: { circuitsFolder: string }) {
     )
       .then((response) => response.arrayBuffer())
       .then((buffer) => new Uint8Array(buffer));
+
+    const sig_onchain = await fetch(
+      `${props.circuitsFolder}/credentialAtomicQuerySigV2OnChain/verification_key.json`
+    )
+      .then((response) => response.arrayBuffer())
+      .then((buffer) => new Uint8Array(buffer));
+
+    const sig_wasm = await fetch(
+      `${props.circuitsFolder}/credentialAtomicQuerySigV2OnChain/circuit.wasm`
+    )
+      .then((response) => response.arrayBuffer())
+      .then((buffer) => new Uint8Array(buffer));
+
+    const sig_zkey = await fetch(
+      `${props.circuitsFolder}/credentialAtomicQuerySigV2OnChain/circuit_final.zkey`
+    )
+      .then((response) => response.arrayBuffer())
+      .then((buffer) => new Uint8Array(buffer));
+
     console.timeEnd("CircuitStorageInstance.init");
     console.time("CircuitStorageInstance.saveCircuitData");
     await cs.saveCircuitData(CircuitId.AuthV2, {
@@ -332,6 +363,12 @@ async function initCircuitStorageFetch(props: { circuitsFolder: string }) {
       wasm: sig_w,
       provingKey: sig_z,
       verificationKey: sig_j,
+    });
+    await cs.saveCircuitData(CircuitId.AtomicQuerySigV2OnChain, {
+      circuitId: "credentialAtomicQuerySigV2OnChain".toString(),
+      wasm: sig_wasm,
+      provingKey: sig_zkey,
+      verificationKey: sig_onchain,
     });
     console.timeEnd("CircuitStorageInstance.saveCircuitData");
   }

@@ -79,15 +79,6 @@ const Credentials = () => {
             <Card>
               <div className="text-lg text-center">No Polygon credentials</div>
 
-              <div>
-                {polygonIdStoredCreds.data?.map((cred) => {
-                  return (
-                    <pre key={cred.id}>
-                      {JSON.stringify(cred.credentialSubject, null, 2)}
-                    </pre>
-                  );
-                })}
-              </div>
               <div
                 className="btn btn-primary text-white"
                 onClick={() => setOpenModal("polygon")}

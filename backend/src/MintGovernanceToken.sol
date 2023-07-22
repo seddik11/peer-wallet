@@ -7,6 +7,7 @@ import "forge-std/console.sol";
 import "sismo-connect-solidity/SismoConnectLib.sol"; // <--- add a Sismo Connect import
 import "./PeerGovernanceToken.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts/metatx/ERC2771Context.sol";
 
 interface IMintableERC20 is IERC20 {
     function mint(address _to, uint256 _amount) external returns (bool);
@@ -19,7 +20,7 @@ interface IMintableERC20 is IERC20 {
  * This contract is used for tutorial purposes only
  * It will be used to demonstrate how to integrate Sismo Connect
  */
-contract MintGovernanceToken is SismoConnect {
+contract MintGovernanceToken is SismoConnect, ERC2771Context {
 
   // SISMO
   error AlreadyClaimed();
@@ -34,8 +35,13 @@ contract MintGovernanceToken is SismoConnect {
 
   IMintableERC20 public token;
 
+   // Results of the verification of the Sismo Connect response.
+  VerifiedAuth[] internal _verifiedAuths;
+  VerifiedClaim[] internal _verifiedClaims;
+  bytes internal _verifiedSignedMessage;
 
-  constructor( IMintableERC20 _token) SismoConnect(buildConfig(_appId, _isImpersonationMode)) // <--- Sismo Connect constructor
+
+  constructor( address trustedForwarder, IMintableERC20 _token) SismoConnect(buildConfig(_appId, _isImpersonationMode)) ERC2771Context(trustedForwarder) // <--- Sismo Connect constructor
   {
     //peerToken = PeerGovernanceToken(0x95bA523Ea0bC13179829d2CAc727061e10b97567); //0x68ce82d73eE26c37d1325aCF69AdcBFe5427E7C0
     token = _token;
@@ -43,12 +49,34 @@ contract MintGovernanceToken is SismoConnect {
 
 // SISMO
   function claimWithSismo(bytes memory response) public {
+    AuthRequest[] memory authRequests = new AuthRequest[](2);
+    
+    authRequests[0] = buildAuth({authType: AuthType.VAULT});
+    authRequests[1] = buildAuth({authType: AuthType.EVM_ACCOUNT});
+
+    // Request users to prove ownership of a Github account
+    // this request is optional
+
+    ClaimRequest[] memory claimRequests = new ClaimRequest[](2);
+    // VAULT
+    claimRequests[0] = buildClaim({groupId: 0x95ab1dc5092706c18b43a36a40df0871});
+    //NAOUN DAO
+    claimRequests[1] = buildClaim({groupId: 0xa4ff29395199edcc63221e5b9b5c202d});
+
+
     SismoConnectVerifiedResult memory result = verify({
       responseBytes: response,
       // we want the user to prove that he owns a Sismo Vault
       // we are recreating the auth request made in the frontend to be sure that
       // the proofs provided in the response are valid with respect to this auth request
-      auth: buildAuth({authType: AuthType.VAULT}),
+
+      auths: authRequests,
+      claims: claimRequests,
+
+      
+      //claims: claimRequests,
+
+  
       // we also want to check if the signed message provided in the response is the signature of the user's address
       signature: buildSignature({message: abi.encode(msg.sender)})
     });
@@ -70,6 +98,14 @@ contract MintGovernanceToken is SismoConnect {
     claimed[vaultId] = true;
 
     // we mint the tokens to the user
-    token.mint(msg.sender, airdropAmount);
+    (token.mint(_msgSender(), airdropAmount), "Minting failed");
   }
+
+   function _msgSender() internal view virtual override(ERC2771Context) returns (address sender) {
+        return ERC2771Context._msgSender();
+    }
+
+    function _msgData() internal view virtual override(ERC2771Context) returns (bytes calldata) {
+        return ERC2771Context._msgData();
+    }
 }

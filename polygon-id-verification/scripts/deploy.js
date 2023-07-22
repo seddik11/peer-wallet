@@ -19,7 +19,8 @@ async function main() {
   console.log("network", hre.network);
 
   const erc20Verifier = await PolygonIdMinter.deploy(
-    "0xEa412a48E2EDFB3771aa61aFc14E203828D1e237"
+    "0x69015912AA33720b842dCD6aC059Ed623F28d9f7", // trusted forwarder
+    "0xEa412a48E2EDFB3771aa61aFc14E203828D1e237" // ERC20 contract
   );
 
   const result = await erc20Verifier.deployed();

@@ -8,7 +8,7 @@ import "./interfaces/ICircuitValidator.sol";
 import "./verifiers/ZKPVerifier.sol";
 
 interface IMintableERC20 is IERC20 {
-    function mint(address _to, uint256 _amount) external returns (bool);
+    function mint(uint256 _amount, address _to) external;
 }
 
 contract PolygonIdMinter is ERC2771Context, ZKPVerifier {
@@ -17,7 +17,7 @@ contract PolygonIdMinter is ERC2771Context, ZKPVerifier {
     mapping(uint256 => address) public idToAddress;
     mapping(address => uint256) public addressToId;
 
-    uint256 public TOKEN_AMOUNT_FOR_AIRDROP_PER_ID = 5 * 10**18; // Modify if the decimals of ERC20 token are not 18
+    uint256 public TOKEN_AMOUNT_FOR_AIRDROP_PER_ID = 5 * 10 ** 18; // Modify if the decimals of ERC20 token are not 18
 
     IMintableERC20 public token;
 
@@ -34,11 +34,11 @@ contract PolygonIdMinter is ERC2771Context, ZKPVerifier {
         address addr = GenesisUtils.int256ToAddress(
             inputs[validator.getChallengeInputIndex()]
         );
-        // this is linking between msg.sender and
+        /*// this is linking between msg.sender and
         require(
             _msgSender() == addr,
             "address in proof is not a sender address"
-        );
+        );*/
     }
 
     function _afterProofSubmit(
@@ -54,11 +54,12 @@ contract PolygonIdMinter is ERC2771Context, ZKPVerifier {
         // get user id
         uint256 id = inputs[1];
         // additional check didn't get airdrop tokens before
-        if (idToAddress[id] == address(0) && addressToId[_msgSender()] == 0 ) {
-            require(token.mint(_msgSender(), TOKEN_AMOUNT_FOR_AIRDROP_PER_ID), "Minting failed"); // Replace _mint with token.mint
+        if (idToAddress[id] == address(0) && addressToId[_msgSender()] == 0) {
+            token.mint(TOKEN_AMOUNT_FOR_AIRDROP_PER_ID, _msgSender());
             addressToId[_msgSender()] = id;
             idToAddress[id] = _msgSender();
         }
+
     }
 
     function _msgSender() internal view virtual override(Context, ERC2771Context) returns (address sender) {
