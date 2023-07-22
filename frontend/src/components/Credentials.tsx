@@ -69,7 +69,7 @@ const Credentials = () => {
               ))}
 
               <div
-                className="btn btn-primary text-white"
+                className="btn btn-primary text-white m-auto"
                 onClick={() => setOpenModal("polygon")}
               >
                 Add Polygon credentials
