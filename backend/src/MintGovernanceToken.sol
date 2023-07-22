@@ -31,7 +31,7 @@ contract MintGovernanceToken is SismoConnect {
   )
     SismoConnect(buildConfig(_appId, _isImpersonationMode)) // <--- Sismo Connect constructor
   {
-    peerToken = PeerGovernanceToken(0x68ce82d73eE26c37d1325aCF69AdcBFe5427E7C0);
+    peerToken = PeerGovernanceToken(0x95bA523Ea0bC13179829d2CAc727061e10b97567); //0x68ce82d73eE26c37d1325aCF69AdcBFe5427E7C0
 
   }
 
