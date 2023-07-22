@@ -1,5 +1,5 @@
 import Image from "next/image";
-import LoginButton from "./LoginButton";
+import BiconomyLoginButton from "./BiconomyLoginButton";
 
 import landingPageImg from "../../public/landingpage.svg";
 
@@ -23,7 +23,7 @@ export default function Home() {
           </h2>
 
           <div className="mt-10">
-            <LoginButton text="Create Wallet" />
+            <BiconomyLoginButton text="Create Wallet" />
           </div>
         </main>
       </div>

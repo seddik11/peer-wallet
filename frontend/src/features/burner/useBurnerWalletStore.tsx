@@ -7,6 +7,7 @@ export type Address = `0x${string}`;
 
 export interface IBurnerStore {
   activeBurnerWallet?: ethers.Wallet;
+  burnerWalletsKeys: string[];
   burnerWallets: ethers.Wallet[];
   generateBurnerWallet: () => void;
   removeBurnerWallet: (address: string) => void;
@@ -17,10 +18,12 @@ export const useBurnerWalletStore = create<IBurnerStore>()(
   persist(
     immer((set) => ({
       activeBurnerWallet: undefined,
+      burnerWalletsKeys: [],
       burnerWallets: [],
       generateBurnerWallet: () => {
         set((store) => {
           const account = ethers.Wallet.createRandom();
+          store.burnerWalletsKeys.push(account.privateKey);
           store.burnerWallets.push(account);
         });
       },

@@ -22,12 +22,13 @@ const paymaster: IPaymaster = new BiconomyPaymaster({
   paymasterUrl: process.env.NEXT_PUBLIC_BICONOMY_PAYMASTER_URL || "",
 });
 
-const LoginButton = ({ text }: { text?: string }) => {
-  const [smartAccount, setSmartAccount] = useState<any>(null);
+const BiconomyLoginButton = ({ text }: { text?: string }) => {
+  const [smartAccount, setSmartAccount] = useState<BiconomySmartAccount | null>(
+    null
+  );
   const [interval, enableInterval] = useState(false);
   const sdkRef = useRef<SocialLogin | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
-  const [provider, setProvider] = useState<any>(null);
   const [address, setAddress] = useState<string>("");
 
   const { wallet, loginWallet, logoutWallet } = useWalletStore();
@@ -39,7 +40,6 @@ const LoginButton = ({ text }: { text?: string }) => {
     const web3Provider = new ethers.providers.Web3Provider(
       sdkRef.current.provider
     );
-    setProvider(web3Provider);
 
     try {
       const biconomySmartAccountConfig: BiconomySmartAccountConfig = {
@@ -67,7 +67,7 @@ const LoginButton = ({ text }: { text?: string }) => {
     let configureLogin: any;
     if (interval) {
       configureLogin = setInterval(() => {
-        if (!!sdkRef.current?.provider) {
+        if (sdkRef.current?.provider) {
           setupSmartAccount();
           clearInterval(configureLogin);
         }
@@ -76,20 +76,21 @@ const LoginButton = ({ text }: { text?: string }) => {
   }, [interval, setupSmartAccount]);
 
   const login = useCallback(async () => {
+    console.log("login");
     if (!sdkRef.current) {
       const socialLoginSDK = new SocialLogin();
       const signature1 = await socialLoginSDK.whitelistUrl(
-        "http://localhost:3000/"
+        "http://localhost:3000"
       );
       const signature2 = await socialLoginSDK.whitelistUrl(
-        "https://peer-wallet.vercel.app/"
+        "https://peer-wallet.vercel.app"
       );
       await socialLoginSDK.init({
         chainId: ethers.utils.hexValue(ChainId.POLYGON_MUMBAI).toString(),
         network: "testnet",
         whitelistUrls: {
-          "http://localhost:3000/": signature1,
-          "https://peer-wallet.vercel.app/": signature2,
+          "http://localhost:3000": signature1,
+          "https://peer-wallet.vercel.app": signature2,
         },
       });
       sdkRef.current = socialLoginSDK;
@@ -145,4 +146,4 @@ const LoginButton = ({ text }: { text?: string }) => {
   );
 };
 
-export default LoginButton;
+export default BiconomyLoginButton;
