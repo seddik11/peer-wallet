@@ -1,6 +1,6 @@
 import { Client, Conversation, DecodedMessage } from "@xmtp/xmtp-js";
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import Chat from "@/features/xmtp/XmtpChat";
+import Chat from "@/features/xmtp/XmtpMessages";
 import { useBurnerWalletStore } from "@/features/burner/useBurnerWalletStore";
 import dynamic from "next/dynamic";
 import { Wallet } from "ethers";

@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
+import "@openzeppelin/contracts/metatx/ERC2771Context.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "./lib/GenesisUtils.sol";
 import "./interfaces/ICircuitValidator.sol";
@@ -10,7 +11,7 @@ interface IMintableERC20 is IERC20 {
     function mint(address _to, uint256 _amount) external returns (bool);
 }
 
-contract PolygonIdMinter is ZKPVerifier {
+contract PolygonIdMinter is ERC2771Context, ZKPVerifier {
     uint64 public constant TRANSFER_REQUEST_ID = 1;
 
     mapping(uint256 => address) public idToAddress;
@@ -20,7 +21,7 @@ contract PolygonIdMinter is ZKPVerifier {
 
     IMintableERC20 public token;
 
-    constructor(IMintableERC20 _token){
+    constructor(address trustedForwarder, IMintableERC20 _token) ERC2771Context(trustedForwarder) {
         token = _token;
     }
 
@@ -58,5 +59,13 @@ contract PolygonIdMinter is ZKPVerifier {
             addressToId[_msgSender()] = id;
             idToAddress[id] = _msgSender();
         }
+    }
+
+    function _msgSender() internal view virtual override(Context, ERC2771Context) returns (address sender) {
+        return ERC2771Context._msgSender();
+    }
+
+    function _msgData() internal view virtual override(Context, ERC2771Context) returns (bytes calldata) {
+        return ERC2771Context._msgData();
     }
 }

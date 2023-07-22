@@ -40,7 +40,7 @@ const ConnectedDapps = ({ initialized }: any) => {
   return (
     <div>
       <div>Connected Dapps</div>
-      <div className="mt-2 mb-10 gap-4 flex flex-col">
+      <div className="mt-2 gap-4 flex flex-col">
         {activeSessions?.length > 0 ? (
           activeSessions.map(({ peer, namespaces }: any, i: number) => (
             <Card key={i}>
