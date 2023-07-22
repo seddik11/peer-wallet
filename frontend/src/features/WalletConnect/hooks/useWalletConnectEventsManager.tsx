@@ -13,6 +13,7 @@ export const useWalletConnectEventsManager = (initialized: boolean) => {
    *****************************************************************************/
   const onSessionProposal = useCallback(
     (proposal: SignClientTypes.EventArguments["session_proposal"]) => {
+      console.log("session_proposal", proposal);
       openModal({
         modalView: {
           type: "SessionProposalModal",
@@ -25,6 +26,7 @@ export const useWalletConnectEventsManager = (initialized: boolean) => {
 
   const onAuthRequest = useCallback(
     (request: Web3WalletTypes.AuthRequest) => {
+      console.log("auth_request", request);
       openModal({
         modalView: {
           data: request,
