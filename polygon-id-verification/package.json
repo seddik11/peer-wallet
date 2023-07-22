@@ -7,7 +7,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "compile": "hardhat compile",
     "deploy": "HARDHAT_NETWORK=mumbai hardhat run scripts/deploy.js",
-    "set-request": "HARDHAT_NETWORK=mumbai hardhat run scripts/set-request.js"
+    "deploy-sismo": "HARDHAT_NETWORK=mumbai hardhat run scripts/deploySismo.js",
+    "set-request": "HARDHAT_NETWORK=mumbai hardhat run scripts/set-request.js",
+    "generate-priv-keys": "HARDHAT_NETWORK=mumbai hardhat run scripts/generate-and-fund-private-keys.js"
   },
   "keywords": [],
   "author": "",
