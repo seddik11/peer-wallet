@@ -37,7 +37,7 @@ const Credentials = () => {
               </div>
             ) : (
               <>
-                <div className="text-lg text-center">No Sismo proof</div>
+                <div className="text-lg text-center">NOUN DAO MEMBERSHIP PROOF WITH SISMO</div>
                 <div
                   className="btn btn-primary text-white"
                   onClick={() => setOpenModal("sismo")}
@@ -72,7 +72,7 @@ const Credentials = () => {
                 className="btn btn-primary text-white m-auto"
                 onClick={() => setOpenModal("polygon")}
               >
-                Add Polygon credentials
+                VERIFY YOUR AGE WITH POLYGON ID
               </div>
             </>
           ) : (
@@ -83,7 +83,7 @@ const Credentials = () => {
                 className="btn btn-primary text-white"
                 onClick={() => setOpenModal("polygon")}
               >
-                Add Polygon credentials
+                VERIFY YOUR RESIDENCY WITH POLYGON ID
               </div>
             </Card>
           )}
