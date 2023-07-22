@@ -42,7 +42,7 @@ export function createKYCAgeCredentialRequest(
 ): ZeroKnowledgeProofRequest {
   const proofReqSig: ZeroKnowledgeProofRequest = {
     id: 1,
-    circuitId: CircuitId.AtomicQuerySigV2,
+    circuitId: CircuitId.AtomicQuerySigV2OnChain,
     optional: false,
     query: {
       allowedIssuers: ["*"],
