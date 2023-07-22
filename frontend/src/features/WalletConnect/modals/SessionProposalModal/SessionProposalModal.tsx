@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { useWcModalStore } from "@/features/WalletConnect/hooks/useWcModalStore";
 import { type SessionTypes } from "@walletconnect/types";
 import { getSdkError } from "@walletconnect/utils";
@@ -92,47 +92,54 @@ const SessionProposalModal = () => {
   }
 
   return (
-    <Fragment>
-      <RequestModalContainer title="Session Proposal">
-        <ProjectInfoCard metadata={proposer.metadata} />
-        {Object.keys(requiredNamespaces)
-          .filter((chain) => {
-            if (!!requiredNamespaces[chain]) return true;
-          })
-          .map((chain) => {
-            return (
-              <Fragment key={chain}>
-                <p>{`Review ${chain} permissions`}</p>
-                <SessionProposalChainCard
-                  // @ts-ignore
-                  requiredNamespace={requiredNamespaces[chain]}
-                />
-                {isEIP155Chain(chain) && (
-                  <ProposalSelectSection
-                    addresses={eip155Addresses}
-                    selectedAddresses={selectedAccounts[chain]}
-                    onSelect={onSelectAccount}
-                    chain={chain}
-                  />
-                )}
-              </Fragment>
-            );
-          })}
-        <div>
-          <button className="btn btn-accent" onClick={onReject}>
-            <>Reject</>
-          </button>
+    <div
+      className={`modal rounded-md ${
+        modalView?.type === "SessionProposalModal" ? "modal-open" : ""
+      }`}
+    >
+      <div className="modal-box w-11/12 max-w-xl bg-teal-100 flex items-center flex-col text-base-100">
+        <Fragment>
+          <RequestModalContainer title="Session Proposal">
+            <ProjectInfoCard metadata={proposer.metadata} />
+            {Object.keys(requiredNamespaces)
+              .filter((chain) => {
+                if (!!requiredNamespaces[chain]) return true;
+              })
+              .map((chain) => {
+                return (
+                  <Fragment key={chain}>
+                    <SessionProposalChainCard
+                      // @ts-ignore
+                      requiredNamespace={requiredNamespaces[chain]}
+                    />
+                    {isEIP155Chain(chain) && (
+                      <ProposalSelectSection
+                        addresses={eip155Addresses}
+                        selectedAddresses={selectedAccounts[chain]}
+                        onSelect={onSelectAccount}
+                        chain={chain}
+                      />
+                    )}
+                  </Fragment>
+                );
+              })}
+            <div className="flex gap-2 justify-between">
+              <button
+                className="btn btn-secondary flex-1"
+                onClick={onApprove}
+                disabled={!hasSelected}
+              >
+                <>Approve</>
+              </button>
 
-          <button
-            className="btn btn-primary"
-            onClick={onApprove}
-            disabled={!hasSelected}
-          >
-            <>Approve</>
-          </button>
-        </div>
-      </RequestModalContainer>
-    </Fragment>
+              <button className="btn btn-primary flex-1" onClick={onReject}>
+                <>Reject</>
+              </button>
+            </div>
+          </RequestModalContainer>
+        </Fragment>
+      </div>
+    </div>
   );
 };
 

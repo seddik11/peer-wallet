@@ -1,22 +1,31 @@
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { pair } from "@/features/WalletConnect/WalletConnectUtils";
-import { useInitialization } from "@/features/WalletConnect/hooks/useInitialization";
-import { useWalletConnectEventsManager } from "@/features/WalletConnect/hooks/useWalletConnectEventsManager";
 import { useWcModalStore } from "@/features/WalletConnect/hooks/useWcModalStore";
 import { parseUri } from "@walletconnect/utils";
 import { toast } from "react-toastify";
+import { useBurnerWalletStore } from "@/features/burner/useBurnerWalletStore";
+import { SessionTypes } from "@walletconnect/types";
 
 export const OnConnectDappsModal = () => {
   const [walletConnectUrl, setWalletConnectUrl] = useState("");
   const [loading, setLoading] = useState(false);
-  const [showScanner, setShowScanner] = useState(false);
   const view = useWcModalStore((state) => state.modalView);
+  const close = useWcModalStore((state) => state.close);
+
+  const {
+    burnerWallets,
+    generateBurnerWallet,
+    removeBurnerWallet,
+    selectBurnerWallet,
+    activeBurnerWallet,
+  } = useBurnerWalletStore();
 
   if (view?.type !== "OnConnectDappsModal") throw new Error("Invalid view");
 
-  async function onConnect(uri: string) {
+  const onConnect = useCallback(async (uri: string) => {
     try {
       setLoading(true);
+
       setWalletConnectUrl(uri);
       const { version } = parseUri(uri);
       console.log("Connection version", version);
@@ -38,40 +47,50 @@ export const OnConnectDappsModal = () => {
       console.log("Finally");
       setLoading(false);
     }
-  }
+  }, []);
+
+  useEffect(() => {
+    generateBurnerWallet();
+  }, [generateBurnerWallet]);
+
+  useEffect(() => {
+    if (burnerWallets?.length) {
+      const [wallet] = burnerWallets.slice(-1);
+      selectBurnerWallet(wallet.address);
+    }
+  }, [burnerWallets, selectBurnerWallet]);
 
   return (
-    <>
-      <div className="h-full bg-white px-4 py-6">
+    <div
+      className={`modal rounded-md ${
+        view?.type === "OnConnectDappsModal" ? "modal-open" : ""
+      }`}
+    >
+      <div className="modal-box w-11/12 max-w-xl bg-teal-100 flex items-center flex-col">
         <input
           type="text"
           placeholder="Enter WalletConnect URI"
-          className="input input-bordered w-full max-w-xs"
+          className="input input-bordered w-full bg-white text-black"
           disabled={loading}
           value={walletConnectUrl}
           onChange={(event) => setWalletConnectUrl(event.target.value)}
         />
-        <div
-          className="pt-6"
-          style={{ paddingBottom: "96px", paddingTop: "24px" }}
-        >
+        <div className="pt-6 w-full">
           <button
             onClick={() => onConnect(walletConnectUrl)}
             disabled={!walletConnectUrl && !loading}
-            className="btn btn-primary w-full mb-2"
+            className="btn btn-primary w-full mb-2 text-white"
           >
-            <>{loading ? "spinner" : <>Connect</>}</>
+            {loading && (
+              <span className="loading loading-spinner btn-neutral text-white"></span>
+            )}
+            {loading ? "loading" : "Connect"}
           </button>
-          <button
-            onClick={() => setShowScanner(true)}
-            className="btn btn-secondary w-full"
-            disabled={true}
-          >
-            <>Scan and connect (TODO)</>
+          <button className="btn btn-neutral w-full" onClick={close}>
+            Close
           </button>
         </div>
       </div>
-      {showScanner && "TODO: Add QR code scanner here."}
-    </>
+    </div>
   );
 };
