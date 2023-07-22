@@ -25,13 +25,13 @@ export const WalletConnect = () => {
     open: open,
   });
   return (
-    <div>
+    <div className="m-auto">
       <button
-        className={"btn"}
+        className={"btn btn-secondary"}
         onClick={onWalletConnect}
-        disabled={!initialized}
+        // disabled={!initialized}
       >
-        WalletConnect
+        Connect
       </button>
     </div>
   );

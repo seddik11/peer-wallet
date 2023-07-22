@@ -34,15 +34,7 @@ export function SessionProposalChainCard({ requiredNamespace }: IProps) {
             flexDirection="col"
             alignItems="flex-start"
           >
-            <p>{formatChainName(chainId)}</p>
-            <div color={"flex flex-col"}>
-              <h6>Methods</h6>
-              <p>{allMethods.length ? allMethods.join(", ") : "-"}</p>
-            </div>
-            <div color={"flex flex-col"}>
-              <h6>Events</h6>
-              <p>{allEvents.length ? allEvents.join(", ") : "-"}</p>
-            </div>
+            <p className="text-center">{formatChainName(chainId)}</p>
           </ChainCard>
         );
       })}

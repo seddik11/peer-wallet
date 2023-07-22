@@ -15,7 +15,7 @@ module.exports = {
       {
         peerWallet: {
           primary: "#F652A0",
-          secondary: "#7ED957",
+          secondary: "#52F6A3",
           neutral: "#3d4451",
           "base-100": "#0097B2",
           "base-200": "#7ED957",

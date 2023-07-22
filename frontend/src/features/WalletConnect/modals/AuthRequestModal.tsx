@@ -13,7 +13,6 @@ import { RequestModalContainer } from "./RequestModalContainer";
 export default function AuthRequestModal() {
   const { account } = useSettingsStore();
   const { modalView, close } = useWcModalStore();
-  console.log("modal data", modalView?.data, account);
 
   if (modalView?.type !== "AuthRequestModal")
     throw new Error("Invalid modal type");
