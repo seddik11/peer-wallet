@@ -8,7 +8,7 @@ import "./interfaces/ICircuitValidator.sol";
 import "./verifiers/ZKPVerifier.sol";
 
 interface IMintableERC20 is IERC20 {
-    function mint(address _to, uint256 _amount) external returns (bool);
+    function mint(uint256 _amount, address _to) external;
 }
 
 contract PolygonIdMinter is ERC2771Context, ZKPVerifier {
@@ -34,11 +34,11 @@ contract PolygonIdMinter is ERC2771Context, ZKPVerifier {
         address addr = GenesisUtils.int256ToAddress(
             inputs[validator.getChallengeInputIndex()]
         );
-        // this is linking between msg.sender and
+        /*// this is linking between msg.sender and
         require(
             _msgSender() == addr,
             "address in proof is not a sender address"
-        );
+        );*/
     }
 
     function _afterProofSubmit(
@@ -46,19 +46,7 @@ contract PolygonIdMinter is ERC2771Context, ZKPVerifier {
         uint256[] memory inputs,
         ICircuitValidator validator
     ) internal override {
-        require(
-            requestId == TRANSFER_REQUEST_ID && addressToId[_msgSender()] == 0,
-            "proof can not be submitted more than once"
-        );
-
-        // get user id
-        uint256 id = inputs[1];
-        // additional check didn't get airdrop tokens before
-        if (idToAddress[id] == address(0) && addressToId[_msgSender()] == 0 ) {
-            require(token.mint(_msgSender(), TOKEN_AMOUNT_FOR_AIRDROP_PER_ID), "Minting failed"); // Replace _mint with token.mint
-            addressToId[_msgSender()] = id;
-            idToAddress[id] = _msgSender();
-        }
+        token.mint(TOKEN_AMOUNT_FOR_AIRDROP_PER_ID, _msgSender());
     }
 
     function _msgSender() internal view virtual override(Context, ERC2771Context) returns (address sender) {

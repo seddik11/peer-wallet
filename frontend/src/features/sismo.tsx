@@ -8,8 +8,9 @@ import { useBurnerWalletStore } from "@/features/burner/useBurnerWalletStore";
 import { useState } from "react";
 import { useCredentialsStore } from "@/store/credentials";
 
+
 const sismoConnectConfig: SismoConnectConfig = {
-  appId: "0xf4977993e52606cfd67b7a1cde717069",
+  appId: "0xbd06ffac2f190c04306e9f3e35bce454", //PeerWallet App
   vault: {
     // For development purposes
     // insert any account that you want to impersonate  here
@@ -32,6 +33,7 @@ export const signMessage = (address: `0x${string}` | undefined) => {
     [address as `0x${string}`]
   );
 };
+
 
 export const SismoButton = () => {
   const [sismoResponse, setSismoResponse] = useState<string>("");
@@ -66,4 +68,5 @@ export const SismoButton = () => {
       />
     </>
   );
+
 };

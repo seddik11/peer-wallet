@@ -7,6 +7,8 @@ import "forge-std/console.sol";
 import "sismo-connect-solidity/SismoConnectLib.sol"; // <--- add a Sismo Connect import
 import "./PeerGovernanceToken.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts/metatx/ERC2771Context.sol";
+
 
 interface IMintableERC20 is IERC20 {
     function mint(address _to, uint256 _amount) external returns (bool);
@@ -19,7 +21,7 @@ interface IMintableERC20 is IERC20 {
  * This contract is used for tutorial purposes only
  * It will be used to demonstrate how to integrate Sismo Connect
  */
-contract MintGovernanceToken is SismoConnect {
+contract MintGovernanceToken is SismoConnect, ERC2771Context {
 
   // SISMO
   error AlreadyClaimed();
@@ -35,7 +37,7 @@ contract MintGovernanceToken is SismoConnect {
   IMintableERC20 public token;
 
 
-  constructor( IMintableERC20 _token) SismoConnect(buildConfig(_appId, _isImpersonationMode)) // <--- Sismo Connect constructor
+  constructor( address trustedForwarder, IMintableERC20 _token) SismoConnect(buildConfig(_appId, _isImpersonationMode)) ERC2771Context(trustedForwarder) // <--- Sismo Connect constructor
   {
     //peerToken = PeerGovernanceToken(0x95bA523Ea0bC13179829d2CAc727061e10b97567); //0x68ce82d73eE26c37d1325aCF69AdcBFe5427E7C0
     token = _token;
@@ -70,6 +72,14 @@ contract MintGovernanceToken is SismoConnect {
     claimed[vaultId] = true;
 
     // we mint the tokens to the user
-    token.mint(msg.sender, airdropAmount);
+    (token.mint(_msgSender(), airdropAmount), "Minting failed");
   }
+
+   function _msgSender() internal view virtual override(ERC2771Context) returns (address sender) {
+        return ERC2771Context._msgSender();
+    }
+
+    function _msgData() internal view virtual override(ERC2771Context) returns (bytes calldata) {
+        return ERC2771Context._msgData();
+    }
 }

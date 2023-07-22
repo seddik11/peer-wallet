@@ -26,7 +26,7 @@ async function main() {
   };
 
   // add the address of the contract just deployed
-  const PolygonIdMinterAddress = "0x59725BD1ED942CFF5A514440A253891Cf8F38805";
+  const PolygonIdMinterAddress = "0x5B529d2c6f86320Ac977cfF6AdfcAd3bCffA5e41";
 
   let PolygonIdMinter = await hre.ethers.getContractAt(
     "PolygonIdMinter",

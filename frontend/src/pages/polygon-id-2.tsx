@@ -23,7 +23,7 @@ export const PolygonIdWallet2 = (props: {
   const [authenticated, setAuthenticated] = useState<any>();
   const [authQr, setAuthQr] = useState<string>("");
   const [credentialQr, setCredentialQr] = useState<string>("");
-  const submitProof = usePolygonIdMinter();
+  const { submitProof, values } = usePolygonIdMinter();
   const [loading, setLoading] = useState(false);
 
   const queryClient = useQueryClient();
@@ -149,10 +149,7 @@ export const PolygonIdWallet2 = (props: {
                     </div>
                   </div>
                 </div>
-                <button
-                  className={"btn"}
-                  onClick={() => submitProof.submitProof.mutate()}
-                >
+                <button className={"btn"} onClick={() => submitProof.mutate()}>
                   <span className="btn-neutral text-white"></span>
                   Submit
                 </button>

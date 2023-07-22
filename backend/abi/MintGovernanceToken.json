@@ -1,7 +1,18 @@
 {
   "abi": [
   {
-    "inputs": [],
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "trustedForwarder",
+        "type": "address"
+      },
+      {
+        "internalType": "contract IMintableERC20",
+        "name": "_token",
+        "type": "address"
+      }
+    ],
     "stateMutability": "nonpayable",
     "type": "constructor"
   },
@@ -138,11 +149,30 @@
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "peerToken",
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "forwarder",
+        "type": "address"
+      }
+    ],
+    "name": "isTrustedForwarder",
     "outputs": [
       {
-        "internalType": "contract PeerGovernanceToken",
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "token",
+    "outputs": [
+      {
+        "internalType": "contract IMintableERC20",
         "name": "",
         "type": "address"
       }
