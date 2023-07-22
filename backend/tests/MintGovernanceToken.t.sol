@@ -4,16 +4,24 @@ pragma solidity ^0.8.17;
 import "forge-std/Test.sol";
 import {MintGovernanceToken} from "../src/MintGovernanceToken.sol";
 import {BaseTest} from "./base/BaseTest.t.sol";
-import {PeerGovernanceToken} from "../src/PeerGovernanceToken.sol";
+//import {PeerGovernanceToken} from "../src/PeerGovernanceToken.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+
+interface IMintableERC20 is IERC20 {
+    function mint(address _to, uint256 _amount) external returns (bool);
+}
 
 
 
 contract AirdropTest is BaseTest {
   MintGovernanceToken public mintTokens;
-  PeerGovernanceToken public peerTokens;
+  //PeerGovernanceToken public peerTokens;
+
+  IMintableERC20 public token;
+
 
   function setUp() public {
-    peerTokens = new PeerGovernanceToken();
+    token = IMintableERC20(0xEa412a48E2EDFB3771aa61aFc14E203828D1e237);
   }
 
 function test_claimWithSismo() public {
@@ -26,7 +34,7 @@ function test_claimWithSismo() public {
     // Call the airdrop contract with this address as the msg.sender to have a valid signature
     vm.startPrank(0x061060a65146b3265C62fC8f3AE977c9B27260fF);
     mintTokens.claimWithSismo(response);
-    assertEq(peerTokens.balanceOf(0x061060a65146b3265C62fC8f3AE977c9B27260fF), 100 * 10 ** 18);
+    assertEq(token.balanceOf(0x061060a65146b3265C62fC8f3AE977c9B27260fF), 100 * 10 ** 18);
 
     // Test that if you call the contract a second time, it reverts
     // Since the user has already claimed the token

@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.2;
+
+/*pragma solidity ^0.8.2;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol";
@@ -42,4 +43,4 @@ contract PeerGovernanceToken is ERC20, ERC20Permit, ERC20Votes {
     function mint(uint256 amount, address receiver) public {
         _mint(receiver, amount);
     }
-}
+}*/
