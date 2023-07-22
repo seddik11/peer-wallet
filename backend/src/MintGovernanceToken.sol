@@ -9,9 +9,9 @@ import "./PeerGovernanceToken.sol";
 
 //POLYGON ID IMPORTS
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
-import "https://github.com/0xPolygonID/tutorial-examples/blob/6052cdff6ecdb9b0fe5a297bace7c81b1d03c95f/on-chain-verification/contracts/lib/GenesisUtils.sol";
-import "interfaces/ICircuitValidator.sol";
-import "verifiers/ZKPVerifier.sol";
+import "/Users/raigal/tmp/ETHGlobalParis/Try6/peer-wallet/backend/lib/tutorial-examples/on-chain-verification/contracts/lib/GenesisUtils.sol";
+import "/Users/raigal/tmp/ETHGlobalParis/Try6/peer-wallet/backend/lib/tutorial-examples/on-chain-verification/contracts/interfaces/ICircuitValidator.sol";
+import "/Users/raigal/tmp/ETHGlobalParis/Try6/peer-wallet/backend/lib/tutorial-examples/on-chain-verification/contracts/verifiers/ZKPVerifier.sol";
 
 
 /*
@@ -116,15 +116,17 @@ contract MintGovernanceToken is SismoConnect, ZKPVerifier {
             idToAddress[id] = _msgSender();
         }
   }
-  function _beforeTokenTransfer(
-        address, /* from */
-        address to,
-        uint256 /* amount */
-    ) internal view override {
-        require(
-            proofs[to][TRANSFER_REQUEST_ID] == true,
-            "only identities who provided proof are allowed to receive tokens"
-        );
-    }
+  // Disabled to suport Sismo
+
+  // function _beforeTokenTransfer(
+  //       address, /* from */
+  //       address to,
+  //       uint256 /* amount */
+  //   ) internal view override {
+  //       require(
+  //           proofs[to][TRANSFER_REQUEST_ID] == true,
+  //           "only identities who provided proof are allowed to receive tokens"
+  //       );
+  //   }
 
 }
