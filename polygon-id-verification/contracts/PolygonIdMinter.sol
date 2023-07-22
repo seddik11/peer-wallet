@@ -1,15 +1,12 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "sismo-connect-onchain-verifier/src/SismoConnectLib.sol"; // <--- add a Sismo Connect import
-import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol";
-import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Votes.sol";
 import "./lib/GenesisUtils.sol";
 import "./interfaces/ICircuitValidator.sol";
 import "./verifiers/ZKPVerifier.sol";
 
-contract ERC20Verifier is ERC20, ZKPVerifier, ERC20Permit, ERC20Votes, SismoConnect {
+contract PolygonIdMinter is ZKPVerifier, SismoConnect {
 
     /**
     SISMO
@@ -31,12 +28,8 @@ contract ERC20Verifier is ERC20, ZKPVerifier, ERC20Permit, ERC20Votes, SismoConn
     mapping(uint256 => address) public idToAddress;
     mapping(address => uint256) public addressToId;
 
-    uint256 public TOKEN_AMOUNT_FOR_AIRDROP_PER_ID =
-    5 * 10 ** uint256(decimals());
 
-    constructor(string memory name_, string memory symbol_)
-    ERC20(name_, symbol_)
-    ERC20Permit(name_)
+    constructor()
     SismoConnect(buildConfig(_appId, _isImpersonationMode)) // <--- Sismo Connect constructor
     {}
     // SISMO
@@ -69,7 +62,7 @@ contract ERC20Verifier is ERC20, ZKPVerifier, ERC20Permit, ERC20Votes, SismoConn
 
         // we mint the tokens to the user
 
-        _mint(msg.sender, airdropAmount);
+        // _mint(msg.sender, airdropAmount);
     }
 
     function _beforeProofSubmit(
@@ -102,28 +95,9 @@ contract ERC20Verifier is ERC20, ZKPVerifier, ERC20Permit, ERC20Votes, SismoConn
         uint256 id = inputs[1];
         // additional check didn't get airdrop tokens before
         if (idToAddress[id] == address(0) && addressToId[_msgSender()] == 0 ) {
-            super._mint(_msgSender(), TOKEN_AMOUNT_FOR_AIRDROP_PER_ID);
+            // super._mint(_msgSender(), TOKEN_AMOUNT_FOR_AIRDROP_PER_ID);
             addressToId[_msgSender()] = id;
             idToAddress[id] = _msgSender();
         }
     }
-
-    function _beforeTokenTransfer(
-        address, /* from */
-        address to,
-        uint256 /* amount */
-    ) internal view override {}
-
-    function _afterTokenTransfer(address from, address to, uint256 amount) internal override(ERC20, ERC20Votes) {
-        super._afterTokenTransfer(from, to, amount);
-    }
-
-    function _mint(address account, uint256 amount) internal virtual override(ERC20, ERC20Votes) {
-        super._mint(account, amount);
-    }
-
-    function _burn(address account, uint256 amount) internal virtual override(ERC20, ERC20Votes) {
-        super._burn(account, amount);
-    }
-
 }
