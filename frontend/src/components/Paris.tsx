@@ -12,12 +12,13 @@ import { goerli } from "wagmi/chains";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { publicProvider } from "wagmi/providers/public";
 import { useAccount } from "wagmi";
+import { SismoClaimButton } from "@/features/sismo";
 
 const { chains, publicClient } = configureChains([goerli], [publicProvider()]);
 
 const { connectors } = getDefaultWallets({
-  appName: "My RainbowKit App",
-  projectId: "YOUR_PROJECT_ID",
+  appName: "Paris",
+  projectId: "1f9ed16c1b11e304a254b8518fe46e67",
   chains,
 });
 
@@ -70,10 +71,6 @@ const Connect = () => (
 
     <div className="mt-10">
       <ConnectButton />
-
-      {/* <div className="w-80 btn border-none text-black bg-yellow-200 hover:bg-yellow-400">
-        Connect
-      </div> */}
     </div>
   </>
 );
@@ -92,9 +89,7 @@ const Claim = () => (
             To start participating claim your voting rights
           </h2>
 
-          <div className="m-auto w-52 btn border-none text-black bg-yellow-200 hover:bg-yellow-400">
-            Claim
-          </div>
+          {/* <SismoClaimButton /> */}
         </div>
       </Card>
     </div>
