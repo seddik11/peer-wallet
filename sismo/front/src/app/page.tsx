@@ -26,7 +26,8 @@ import {
 } from "viem/chains";
 import { waitForTransaction } from "@wagmi/core";
 import { decodeEventLog, formatEther } from "viem";
-import { abi as AirdropABI } from "../../../abi/Airdrop.json";
+import { mintABI } from "../../../abi/MintGovernanceToken.json";
+import { tokenABI } from "../../../abi/PeerGovernanceToken.json";
 import { errorsABI, formatError, fundMyAccountOnLocalFork, signMessage } from "@/utils/misc";
 import { mumbaiFork } from "@/utils/wagmi";
 import {
@@ -35,7 +36,7 @@ import {
   AuthType, // the authType enum, we will choose 'VAULT' in this tutorial
   ClaimType, // the claimType enum, we will choose 'GTE' in this tutorial, to check that the user has a value greater than a given threshold
 } from "@sismo-core/sismo-connect-react";
-import { transactions } from "../../../broadcast/Airdrop.s.sol/5151111/run-latest.json";
+import { transactions } from "../../../broadcast/MintGovernance.s.sol/5151111/run-latest.json";
 
 /* ***********************  Sismo Connect Config *************************** */
 
@@ -43,7 +44,7 @@ import { transactions } from "../../../broadcast/Airdrop.s.sol/5151111/run-lates
 // The SismoConnectConfig is a configuration needed to connect to Sismo Connect and requests data from your users.
 
 const sismoConnectConfig: SismoConnectConfig = {
-  appId: "0xf4977993e52606cfd67b7a1cde717069",
+  appId: "0xbd06ffac2f190c04306e9f3e35bce454", //PeerWallet App
   vault: {
     // For development purposes
     // insert any account that you want to impersonate  here
@@ -84,8 +85,8 @@ export default function Home() {
     responseBytes && chain
       ? {
           address: transactions[0].contractAddress as `0x${string}}`,
-          abi: [...AirdropABI, ...errorsABI],
-          functionName: "claimWithSismo",
+          abi: [...mintABI, ...errorsABI],
+          functionName: "mintGovernanceTokens",
           args: [responseBytes],
           chain,
         }
@@ -118,7 +119,7 @@ export default function Home() {
       const txReceipt = tx && (await waitForTransaction({ hash: tx.hash }));
       if (txReceipt?.status === "success") {
         const mintEvent = decodeEventLog({
-          abi: AirdropABI,
+          abi: mintABI,
           data: txReceipt.logs[0]?.data,
           topics: txReceipt.logs[0]?.topics,
         });

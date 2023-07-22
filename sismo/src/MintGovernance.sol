@@ -4,6 +4,8 @@ pragma solidity ^0.8.17;
 import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "forge-std/console.sol";
 import "sismo-connect-solidity/SismoConnectLib.sol"; // <--- add a Sismo Connect import
+import "./GovernanceToken.sol"; // <--- Import the GovernanceToken contract
+
 
 /*
  * @title Airdrop
@@ -12,25 +14,24 @@ import "sismo-connect-solidity/SismoConnectLib.sol"; // <--- add a Sismo Connect
  * This contract is used for tutorial purposes only
  * It will be used to demonstrate how to integrate Sismo Connect
  */
-contract Airdrop is ERC20, SismoConnect {
+contract MintGovernance is SismoConnect {
   error AlreadyClaimed();
   using SismoConnectHelper for SismoConnectVerifiedResult;
   mapping(uint256 => bool) public claimed;
 
   // add your appId
-  bytes16 private _appId = 0xf4977993e52606cfd67b7a1cde717069;
+  bytes16 private _appId = 0xbd06ffac2f190c04306e9f3e35bce454; //PeerWallet App
   // use impersonated mode for testing
   bool private _isImpersonationMode = true;
 
-  constructor(
-    string memory name,
-    string memory symbol
-  )
-    ERC20(name, symbol)
-    SismoConnect(buildConfig(_appId, _isImpersonationMode)) // <--- Sismo Connect constructor
-  {}
+  // Reference to the already deployed GovernanceToken contract
+  PeerGovernanceToken private _governanceToken;
 
-  function claimWithSismo(bytes memory response) public {
+  constructor(PeerGovernanceToken governanceToken) SismoConnect(buildConfig(_appId, _isImpersonationMode)) {
+    _governanceToken = governanceToken;
+  }
+
+  function mintGovernanceTokens(bytes memory response) public {
     SismoConnectVerifiedResult memory result = verify({
       responseBytes: response,
       // we want the user to prove that he owns a Sismo Vault
@@ -42,7 +43,7 @@ contract Airdrop is ERC20, SismoConnect {
     });
 
     // if the proofs and signed message are valid, we take the userId from the verified result
-    // in this case the userId is the vaultId (since we used AuthType.VAULT in the auth request),
+    // in this case, the userId is the vaultId (since we used AuthType.VAULT in the auth request),
     // it is the anonymous identifier of a user's vault for a specific app
     // --> vaultId = hash(userVaultSecret, appId)
     uint256 vaultId = result.getUserId(AuthType.VAULT);
@@ -51,13 +52,14 @@ contract Airdrop is ERC20, SismoConnect {
     if (claimed[vaultId]) {
       revert AlreadyClaimed();
     }
+
     // each vaultId can claim 100 tokens
     uint256 airdropAmount = 100 * 10 ** 18;
 
     // we mark the user as claimed. We could also have stored more user airdrop information for a more complex airdrop system. But we keep it simple here.
     claimed[vaultId] = true;
 
-    // we mint the tokens to the user
-    _mint(msg.sender, airdropAmount);
+    // we mint the tokens to the user using the GovernanceToken contract
+    _governanceToken.mint( msg.sender, airdropAmount);
   }
 }

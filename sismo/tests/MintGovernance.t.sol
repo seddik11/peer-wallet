@@ -2,18 +2,28 @@
 pragma solidity ^0.8.17;
 
 import "forge-std/Test.sol";
-import {Airdrop} from "../src/Airdrop.sol";
+import {MintGovernance} from "../src/MintGovernance.sol";
 import {BaseTest} from "./base/BaseTest.t.sol";
+import "src/GovernanceToken.sol"; // <--- Import the GovernanceToken contract
+
 
 
 contract AirdropTest is BaseTest {
-  Airdrop public airdrop;
+  MintGovernance public governanceMint;
+  //GovernanceToken governanceToken = GovernanceToken(0xD84683511C82e8d124112D69b7BfF2D277e75167);
+  PeerGovernanceToken public governanceToken; // Declare governanceToken as a state variable
+
 
   function setUp() public {
-    airdrop = new Airdrop("My airdrop contract", "AIR");
+
+    // Deploy the GovernanceToken contract
+    governanceToken = new PeerGovernanceToken();
+    console.log("GovernanceToken Contract deployed at", address(governanceToken));
+
+    governanceMint = new MintGovernance(governanceToken);
   }
 
-function test_claimWithSismo() public {
+  function test_claimWithSismo() public {
     _registerTreeRoot(6809039494302059845304658373818291425421659513112036389099201151919308922689);
 
     // Replace with actual response data from your app
@@ -22,13 +32,13 @@ function test_claimWithSismo() public {
     
     // Call the airdrop contract with this address as the msg.sender to have a valid signature
     vm.startPrank(0x061060a65146b3265C62fC8f3AE977c9B27260fF);
-    airdrop.claimWithSismo(response);
-    assertEq(airdrop.balanceOf(0x061060a65146b3265C62fC8f3AE977c9B27260fF), 100 * 10 ** 18);
+    governanceMint.mintGovernanceTokens(response);
+    assertEq(governanceToken.balanceOf(0x061060a65146b3265C62fC8f3AE977c9B27260fF), 1 * 10 ** 18);
 
     // Test that if you call the contract a second time, it reverts
     // Since the user has already claimed the token
     vm.expectRevert(abi.encodeWithSignature("AlreadyClaimed()"));
-    airdrop.claimWithSismo(response);
+    governanceMint.mintGovernanceTokens(response);
   }
 }
 
