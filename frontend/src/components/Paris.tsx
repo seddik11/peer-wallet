@@ -15,7 +15,7 @@ import { useAccount } from "wagmi";
 // import { SismoClaimButton } from "@/features/sismo";
 
 const { chains, publicClient } = configureChains(
-  [goerli, polygonMumbai],
+  [polygonMumbai],
   [publicProvider()]
 );
 
