@@ -26,7 +26,7 @@ async function main() {
   };
 
   // add the address of the contract just deployed
-  const PolygonIdMinterAddress = "0x5B529d2c6f86320Ac977cfF6AdfcAd3bCffA5e41";
+  const PolygonIdMinterAddress = "0xF02DB9dfce29eAFDD57Dd493fE15F7f06E9Ea8a3";
 
   let PolygonIdMinter = await hre.ethers.getContractAt(
     "PolygonIdMinter",
@@ -37,6 +37,14 @@ async function main() {
   // const validatorAddress = "0x3DcAe4c8d94359D31e4C89D7F2b944859408C618"; // mtp validator
 
   try {
+    console.log("zkp", {
+      requestId,
+      validatorAddress,
+      schema: query.schema,
+      claimPathKey: query.claimPathKey,
+      operator: query.operator,
+      value: query.value,
+    });
     const result = await PolygonIdMinter.setZKPRequest(
       requestId,
       validatorAddress,
