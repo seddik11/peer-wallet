@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "postinstall": "patch-package",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
@@ -19,6 +20,7 @@
     "@iden3/js-iden3-auth": "1.0.0-beta.13",
     "@iden3/js-jwz": "1.0.0-beta.2",
     "@json-rpc-tools/utils": "^1.7.6",
+    "@tanstack/react-query": "^4.32.0",
     "@types/node": "20.4.2",
     "@types/react": "18.2.15",
     "@types/react-dom": "18.2.7",
@@ -48,6 +50,8 @@
     "zustand": "4.3.7"
   },
   "devDependencies": {
-    "daisyui": "^3.3.1"
+    "daisyui": "^3.3.1",
+    "patch-package": "^7.0.2",
+    "postinstall-postinstall": "^2.1.0"
   }
 }
