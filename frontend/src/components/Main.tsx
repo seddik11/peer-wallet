@@ -1,6 +1,5 @@
 import Image from "next/image";
 import LoginButton from "./LoginButton";
-import Navbar from "./Navbar";
 
 import landingPageImg from "../../public/landingpage.svg";
 

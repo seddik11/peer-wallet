@@ -9,6 +9,7 @@ import { isEIP155Chain } from "@/features/WalletConnect/HelperUtil";
 import { web3wallet } from "@/features/WalletConnect/WalletConnectUtils";
 import { ProposalSelectSection } from "@/features/WalletConnect/modals/SessionProposalModal/ProposalSelectSection";
 import { eip155Addresses } from "@/features/WalletConnect/Eip155WalletUtil";
+import { useConnectedDapps } from "@/store/connectedDapps";
 
 const SessionProposalModal = () => {
   const [selectedAccounts, setSelectedAccounts] = useState<
@@ -23,6 +24,8 @@ const SessionProposalModal = () => {
       modalView: state.modalView,
     };
   });
+
+  const { connectDapp } = useConnectedDapps();
 
   if (modalView?.type !== "SessionProposalModal")
     throw new Error("Invalid modal type");
@@ -55,27 +58,33 @@ const SessionProposalModal = () => {
   }
 
   // Hanlde approve action, construct session namespace
-  function onApprove() {
+  async function onApprove() {
     if (modalView?.type === "SessionProposalModal") {
-      const namespaces: SessionTypes.Namespaces = {};
-      Object.keys(requiredNamespaces).forEach((key) => {
-        const accounts: string[] = [];
-        requiredNamespaces[key]?.chains?.map((chain) => {
-          selectedAccounts[key]?.map((acc) => accounts.push(`${chain}:${acc}`));
+      try {
+        const namespaces: SessionTypes.Namespaces = {};
+        Object.keys(requiredNamespaces).forEach((key) => {
+          const accounts: string[] = [];
+          requiredNamespaces[key]?.chains?.map((chain) => {
+            selectedAccounts[key]?.map((acc) =>
+              accounts.push(`${chain}:${acc}`)
+            );
+          });
+          namespaces[key] = {
+            accounts,
+            // @ts-ignore
+            methods: requiredNamespaces[key].methods,
+            // @ts-ignore
+            events: requiredNamespaces[key].events,
+          };
         });
-        namespaces[key] = {
-          accounts,
-          // @ts-ignore
-          methods: requiredNamespaces[key].methods,
-          // @ts-ignore
-          events: requiredNamespaces[key].events,
-        };
-      });
-      void web3wallet.approveSession({
-        id,
-        relayProtocol: relays[0]?.protocol,
-        namespaces,
-      });
+        await web3wallet.approveSession({
+          id,
+          relayProtocol: relays[0]?.protocol,
+          namespaces,
+        });
+      } catch (error) {
+        if (/No matching key/i.test((error as Error).message)) return;
+      }
     }
     closeModal();
   }

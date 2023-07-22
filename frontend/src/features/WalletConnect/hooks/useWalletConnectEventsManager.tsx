@@ -105,7 +105,10 @@ export const useWalletConnectEventsManager = (initialized: boolean) => {
    * Set up WalletConnect event listeners
    *****************************************************************************/
   useEffect(() => {
+    console.log("useEffect", initialized);
     if (initialized) {
+      console.log("useEffect", initialized);
+
       // sign
       // @ts-ignore
       web3wallet.on("session_proposal", onSessionProposal);
