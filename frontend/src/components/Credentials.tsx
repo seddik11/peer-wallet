@@ -1,16 +1,23 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Card from "./Card";
 import { SismoButton } from "@/features/sismo";
 import { useCredentialsStore } from "@/store/credentials";
 
-import { BeakerIcon, CheckCircleIcon } from "@heroicons/react/24/solid";
+import { CheckCircleIcon } from "@heroicons/react/24/solid";
 import truncateAddress from "@/utils/truncateAddress";
+import PolygonIdWallet from "@/pages/polygon-id";
+import { usePolygonIdStoredCreds } from "@/features/polygon-id/usePolygonId";
 
 const Credentials = () => {
-  const polygonCredentials = false;
-
   const [openModal, setOpenModal] = useState<string>();
   const { sismoProof } = useCredentialsStore();
+
+  const polygonIdStoredCreds = usePolygonIdStoredCreds();
+
+  const polygonCredentials =
+    polygonIdStoredCreds.data?.filter(
+      ({ type }) => !type.includes("AuthBJJCredential")
+    ) || [];
 
   return (
     <>
@@ -40,11 +47,47 @@ const Credentials = () => {
               </>
             )}
           </Card>
-          {polygonCredentials ? (
-            <Card />
+          {polygonCredentials.length > 0 ? (
+            <>
+              {polygonCredentials.map((cred) => (
+                <Card key={cred.id}>
+                  <div className="flex gap-4 items-center">
+                    <div className="text-green-300 w-12">
+                      <CheckCircleIcon />
+                    </div>
+                    <div className="flex-1">
+                      <div className="font-bold">
+                        {cred.credentialSubject.type as string}
+                      </div>
+                      <div>
+                        {cred.credentialSubject.birthday as string}
+                        {cred.credentialSubject.countryCode as string}
+                      </div>
+                    </div>
+                  </div>
+                </Card>
+              ))}
+
+              <div
+                className="btn btn-primary text-white"
+                onClick={() => setOpenModal("polygon")}
+              >
+                Add Polygon credentials
+              </div>
+            </>
           ) : (
             <Card>
               <div className="text-lg text-center">No Polygon credentials</div>
+
+              <div>
+                {polygonIdStoredCreds.data?.map((cred) => {
+                  return (
+                    <pre key={cred.id}>
+                      {JSON.stringify(cred.credentialSubject, null, 2)}
+                    </pre>
+                  );
+                })}
+              </div>
               <div
                 className="btn btn-primary text-white"
                 onClick={() => setOpenModal("polygon")}
@@ -55,7 +98,6 @@ const Credentials = () => {
           )}
         </div>
       </div>
-
       <div className={`modal ${openModal === "sismo" && "modal-open"}`}>
         <div className="modal-box w-11/12 max-w-xl bg-white text-black flex items-center flex-col">
           <SismoButton />
@@ -71,7 +113,11 @@ const Credentials = () => {
 
       <div className={`modal ${openModal === "polygon" && "modal-open"}`}>
         <div className="modal-box w-11/12 max-w-xl bg-white text-black flex items-center flex-col">
-          Polygon Modal
+          <PolygonIdWallet
+            isOpen={openModal === "polygon"}
+            close={() => setOpenModal("")}
+          />
+
           <button
             className="btn btn-neutral w-full"
             onClick={() => setOpenModal("")}

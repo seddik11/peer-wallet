@@ -41,7 +41,7 @@ export const SismoButton = () => {
 
   return (
     <>
-      <div className="text-lg font-bold">Claim your Sismo proof</div>
+      <div className="text-lg font-bold">Claim Sismo proof</div>
       <div className="break-all p-4 max-h-80 overflow-auto bg-slate-200 rounded-md my-5">
         {sismoResponse}
       </div>
