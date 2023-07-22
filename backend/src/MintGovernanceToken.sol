@@ -10,6 +10,7 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/metatx/ERC2771Context.sol";
 
 
+
 interface IMintableERC20 is IERC20 {
     function mint(address _to, uint256 _amount) external returns (bool);
 }
@@ -36,6 +37,11 @@ contract MintGovernanceToken is SismoConnect, ERC2771Context {
 
   IMintableERC20 public token;
 
+   // Results of the verification of the Sismo Connect response.
+  VerifiedAuth[] internal _verifiedAuths;
+  VerifiedClaim[] internal _verifiedClaims;
+  bytes internal _verifiedSignedMessage;
+
 
   constructor( address trustedForwarder, IMintableERC20 _token) SismoConnect(buildConfig(_appId, _isImpersonationMode)) ERC2771Context(trustedForwarder) // <--- Sismo Connect constructor
   {
@@ -45,12 +51,35 @@ contract MintGovernanceToken is SismoConnect, ERC2771Context {
 
 // SISMO
   function claimWithSismo(bytes memory response) public {
+    AuthRequest[] memory authRequests = new AuthRequest[](2);
+    
+    authRequests[0] = buildAuth({authType: AuthType.VAULT});
+    authRequests[1] = buildAuth({authType: AuthType.EVM_ACCOUNT});
+
+    // Request users to prove ownership of a Github account
+    // this request is optional
+
+    ClaimRequest[] memory claimRequests = new ClaimRequest[](2);
+    claimRequests[0] = buildClaim({groupId: 0x95ab1dc5092706c18b43a36a40df0871});
+
+    claimRequests[1] = buildClaim({groupId: 0xa4ff29395199edcc63221e5b9b5c202d});
+
+
+
+
     SismoConnectVerifiedResult memory result = verify({
       responseBytes: response,
       // we want the user to prove that he owns a Sismo Vault
       // we are recreating the auth request made in the frontend to be sure that
       // the proofs provided in the response are valid with respect to this auth request
-      auth: buildAuth({authType: AuthType.VAULT}),
+
+      auths: authRequests,
+      claims: claimRequests,
+
+      
+      //claims: claimRequests,
+
+  
       // we also want to check if the signed message provided in the response is the signature of the user's address
       signature: buildSignature({message: abi.encode(msg.sender)})
     });
