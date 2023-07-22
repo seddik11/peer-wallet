@@ -11,8 +11,8 @@
   "license": "ISC",
   "dependencies": {
     "@nomiclabs/hardhat-waffle": "^2.0.3",
-    "@openzeppelin/contracts": "^4.7.3",
-    "@openzeppelin/contracts-upgradeable": "^4.7.3",
+    "@openzeppelin/contracts": "^4.9.2",
+    "@openzeppelin/contracts-upgradeable": "^4.9.2",
     "@openzeppelin/hardhat-upgrades": "^1.22.1",
     "dotenv": "^16.0.2",
     "sismo-connect-onchain-verifier": "github:sismo-core/sismo-connect-solidity",

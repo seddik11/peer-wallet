@@ -5,7 +5,7 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Votes.sol";
 
-contract PeerGovernanceToken is ERC20, ERC20Permit, ERC20Votes {
+contract PeerGovernanceToken is ERC20, ERC20Permit, ERC20Votes, SismoConnect, ZKPVerifier {
     constructor() ERC20("Peer Governance Token", "PGT") ERC20Permit("PeerVoteToken") {}
 
     // The functions below are overrides required by Solidity.
