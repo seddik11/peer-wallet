@@ -7,13 +7,6 @@ import "forge-std/console.sol";
 import "sismo-connect-solidity/SismoConnectLib.sol"; // <--- add a Sismo Connect import
 import "./PeerGovernanceToken.sol";
 
-//POLYGON ID IMPORTS
-import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
-import "lib/tutorial-examples/on-chain-verification/contracts/lib/GenesisUtils.sol";
-import "lib/tutorial-examples/on-chain-verification/contracts/interfaces/ICircuitValidator.sol";
-import "lib/tutorial-examples/on-chain-verification/contracts/verifiers/ZKPVerifier.sol";
-
-
 /*
  * @title Airdrop
  * @author Sismo
@@ -33,14 +26,6 @@ contract MintGovernanceToken is SismoConnect, ZKPVerifier {
   // use impersonated mode for testing
   bool private _isImpersonationMode = true;
   PeerGovernanceToken public peerToken;
-
-  //POLYGON
-  uint64 public constant TRANSFER_REQUEST_ID = 1;
-  // define the amount of token to be airdropped per user
-  uint256 public TOKEN_AMOUNT_FOR_AIRDROP_PER_ID = 100 * 10 ** 18;
-
-  mapping(uint256 => address) public idToAddress;
-  mapping(address => uint256) public addressToId;
 
   constructor(
   )
@@ -81,52 +66,4 @@ contract MintGovernanceToken is SismoConnect, ZKPVerifier {
     // we mint the tokens to the user
     peerToken.mint(msg.sender, airdropAmount);
   }
-
-  //POLYGON
-  function _beforeProofSubmit(
-    uint64, /* requestId */
-    uint256[] memory inputs,
-    ICircuitValidator validator
-    ) internal view override {
-        // check that the challenge input of the proof is equal to the msg.sender
-        address addr = GenesisUtils.int256ToAddress(
-            inputs[validator.getChallengeInputIndex()]
-        );
-        require(
-            _msgSender() == addr,
-            "address in the proof is not a sender address"
-        );
-    }
-
-  function _afterProofSubmit(
-        uint64 requestId,
-        uint256[] memory inputs,
-        ICircuitValidator validator
-    ) internal override {
-        require(
-            requestId == TRANSFER_REQUEST_ID && addressToId[_msgSender()] == 0,
-            "proof can not be submitted more than once"
-        );
-
-        uint256 id = inputs[validator.getChallengeInputIndex()];
-        // execute the airdrop
-        if (idToAddress[id] == address(0)) {
-            peerToken.mint(_msgSender(), TOKEN_AMOUNT_FOR_AIRDROP_PER_ID);
-            addressToId[_msgSender()] = id;
-            idToAddress[id] = _msgSender();
-        }
-  }
-  // Disabled to suport Sismo
-
-  // function _beforeTokenTransfer(
-  //       address, /* from */
-  //       address to,
-  //       uint256 /* amount */
-  //   ) internal view override {
-  //       require(
-  //           proofs[to][TRANSFER_REQUEST_ID] == true,
-  //           "only identities who provided proof are allowed to receive tokens"
-  //       );
-  //   }
-
 }
