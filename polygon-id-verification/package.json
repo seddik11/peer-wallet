@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "compile": "hardhat compile",
-    "deploy": "HARDHAT_NETWORK=mumbai hardhat run scripts/deploy.js"
+    "deploy": "HARDHAT_NETWORK=mumbai hardhat run scripts/deploy.js",
+    "set-request": "HARDHAT_NETWORK=mumbai hardhat run scripts/set-request.js"
   },
   "keywords": [],
   "author": "",
