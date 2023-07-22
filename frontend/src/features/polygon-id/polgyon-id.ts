@@ -42,9 +42,11 @@ import {
   IStateStorage,
   ICircuitStorage,
   ProofService,
+  AuthHandler,
 } from "@0xpolygonid/js-sdk";
 
 import { proving } from "@iden3/js-jwz";
+import { DID } from "@iden3/js-iden3-core";
 
 export { W3CCredential } from "@0xpolygonid/js-sdk";
 export { byteEncoder } from "@0xpolygonid/js-sdk";
@@ -57,9 +59,13 @@ export const getPolygonIdWallet = async (config: {
     publicKey: Buffer;
     privateKey: Uint8Array;
   };
-  did?: string;
+  did?: DID;
   memory?: boolean;
 }) => {
+  console.log(`=== getPolygonIdWallet ===`, {
+    rpcUrl: config.rpcUrl,
+    did: config.did,
+  });
   let circuitStorage: CircuitStorage | null = null;
 
   const dataStorage = initDataStorage({
@@ -79,7 +85,6 @@ export const getPolygonIdWallet = async (config: {
     return (
       await identityWallet.createIdentity({
         method: core.DidMethod.PolygonId,
-
         blockchain: core.Blockchain.Polygon,
         networkId: core.NetworkId.Mumbai,
         seed: config.keyPair.privateKey,
@@ -88,10 +93,13 @@ export const getPolygonIdWallet = async (config: {
           id: config.rhsUrl,
         },
       })
-    ).did.toString();
+    ).did;
   };
-  if (config.did && !(await dataStorage.identity.getIdentity(config.did))) {
-    throw new Error(`Identifier ${config.did} not found`);
+  if (
+    config.did &&
+    !(await dataStorage.identity.getIdentity(config.did.toString()))
+  ) {
+    throw new Error(`Identifier ${config.did.toString()} not found`);
   }
   const did = config.did ?? (await createIdentity());
 
@@ -104,8 +112,8 @@ export const getPolygonIdWallet = async (config: {
     return circuitStorage;
   };
 
-  const handleCredentialQrOffer = async (props: {
-    credentialQrOffer: unknown;
+  const handleCredentialOffer = async (props: {
+    credentialQrOffer: string;
     userDID: core.DID | string;
   }) => {
     if (!circuitStorage) throw new Error("circuitStorage is not initialized");
@@ -122,17 +130,78 @@ export const getPolygonIdWallet = async (config: {
       proofService.verifyState.bind(proofService)
     );
     const fetchHandler = new FetchHandler(packageManager);
-    const msgBytes = byteEncoder.encode(
-      JSON.stringify(props.credentialQrOffer)
-    );
+    const msgBytes = byteEncoder.encode(props.credentialQrOffer);
     const did = core.DID.parse(props.userDID.toString());
-    return await fetchHandler.handleCredentialOffer(did, msgBytes);
+    const creds = await fetchHandler.handleCredentialOffer(did, msgBytes);
+    console.log("handleCredentialOffer", creds);
+    await credentialWallet.saveAll(creds);
+    return creds;
+  };
+
+  const handleAuthOffer = async (props: { authRequest: string; did: DID }) => {
+    const msgBytes = byteEncoder.encode(props.authRequest);
+    if (!circuitStorage) throw new Error("circuitStorage is not initialized");
+    const proofService = initProofService({
+      identityWallet,
+      credentialWallet,
+      stateStorage: dataStorage.states,
+      circuitStorage,
+    });
+    const authV2Data = await circuitStorage.loadCircuitData(CircuitId.AuthV2);
+    const packageManager = initPackageManager(
+      authV2Data,
+      proofService.generateAuthV2Inputs.bind(proofService),
+      proofService.verifyState.bind(proofService)
+    );
+    const authHandler = new AuthHandler(
+      packageManager,
+      proofService,
+      credentialWallet
+    );
+    console.log("authRawRequest", {
+      msgBytes,
+      did: props.did,
+    });
+    const authHandlerRequest =
+      await authHandler.handleAuthorizationRequestForGenesisDID(
+        props.did,
+        msgBytes
+      );
+    console.log("SUCCESS AUTH", JSON.stringify(authHandlerRequest, null, 2));
+
+    // authenticate with the server
+
+    /**
+     * curl -X POST "http://localhost:3002/v1/authentication/callback" \
+     *  -H "accept: application/json"\
+     *  -H "content-type: text/plain" \
+     *  -d 'jwz-token' \
+     */
+    if (!authHandlerRequest.authRequest.body?.callbackUrl)
+      throw new Error("No callbackUrl");
+
+    console.log(
+      "authHandlerRequest.authRequest.body?.callbackUrl",
+      authHandlerRequest.authRequest.body?.callbackUrl
+    );
+    console.log("authHandlerRequest.token", authHandlerRequest.token);
+    const authResponse = await fetch(
+      authHandlerRequest.authRequest.body?.callbackUrl,
+      {
+        method: "POST",
+        body: authHandlerRequest.token,
+      }
+    );
+    const authResponseJson = await authResponse.json();
+
+    console.log("authResponseJson", authResponseJson);
   };
 
   return {
     did,
     initCircuits,
-    handleCredentialOffer: handleCredentialQrOffer,
+    handleCredentialOffer,
+    handleAuthOffer,
     identityWallet,
     credentialWallet,
   };
