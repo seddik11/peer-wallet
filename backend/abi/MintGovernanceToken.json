@@ -1,7 +1,13 @@
 {
   "abi": [
   {
-    "inputs": [],
+    "inputs": [
+      {
+        "internalType": "contract IMintableERC20",
+        "name": "_token",
+        "type": "address"
+      }
+    ],
     "stateMutability": "nonpayable",
     "type": "constructor"
   },
@@ -139,10 +145,10 @@
   },
   {
     "inputs": [],
-    "name": "peerToken",
+    "name": "token",
     "outputs": [
       {
-        "internalType": "contract PeerGovernanceToken",
+        "internalType": "contract IMintableERC20",
         "name": "",
         "type": "address"
       }
