@@ -14,7 +14,7 @@ import "./PeerGovernanceToken.sol";
  * This contract is used for tutorial purposes only
  * It will be used to demonstrate how to integrate Sismo Connect
  */
-contract MintGovernanceToken is SismoConnect, ZKPVerifier {
+contract MintGovernanceToken is SismoConnect {
 
   // SISMO
   error AlreadyClaimed();
