@@ -1,18 +1,15 @@
-[submodule "sismo/lib/openzeppelin-contracts"]
-	path = sismo/lib/openzeppelin-contracts
+[submodule "backend/lib/openzeppelin-contracts"]
+	path = backend/lib/openzeppelin-contracts
 	url = https://github.com/openzeppelin/openzeppelin-contracts
-[submodule "sismo/lib/forge-std"]
-	path = sismo/lib/forge-std
+[submodule "backend/lib/forge-std"]
+	path = backend/lib/forge-std
 	url = https://github.com/foundry-rs/forge-std
-[submodule "sismo/lib/sismo-connect-solidity"]
-	path = sismo/lib/sismo-connect-solidity
+[submodule "backend/lib/sismo-connect-solidity"]
+	path = backend/lib/sismo-connect-solidity
 	url = https://github.com/sismo-core/sismo-connect-solidity
-[submodule "sismo-connect-onchain-tutorial/lib/openzeppelin-contracts"]
-	path = sismo-connect-onchain-tutorial/lib/openzeppelin-contracts
-	url = https://github.com/openzeppelin/openzeppelin-contracts
-[submodule "sismo-connect-onchain-tutorial/lib/forge-std"]
-	path = sismo-connect-onchain-tutorial/lib/forge-std
+[submodule "sismo-connect-solidity"]
+	path = sismo-connect-solidity
+	url = https://github.com/sismo-core/sismo-connect-solidity
+[submodule "forge-std"]
+	path = forge-std
 	url = https://github.com/foundry-rs/forge-std
-[submodule "sismo-connect-onchain-tutorial/lib/sismo-connect-solidity"]
-	path = sismo-connect-onchain-tutorial/lib/sismo-connect-solidity
-	url = https://github.com/sismo-core/sismo-connect-solidity
