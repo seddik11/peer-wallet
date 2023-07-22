@@ -50,8 +50,8 @@ export function createKYCAgeCredentialRequest(
       context:
         "https://raw.githubusercontent.com/iden3/claim-schema-vocab/main/schemas/json-ld/kyc-v3.json-ld",
       credentialSubject: {
-        documentType: {
-          $eq: 99,
+        birthday: {
+          $lt: 20020101,
         },
       },
     },

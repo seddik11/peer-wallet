@@ -33,11 +33,11 @@ contract PolygonIdMinter is ZKPVerifier {
         address addr = GenesisUtils.int256ToAddress(
             inputs[validator.getChallengeInputIndex()]
         );
-        // this is linking between msg.sender and
+        /*// this is linking between msg.sender and
         require(
             _msgSender() == addr,
             "address in proof is not a sender address"
-        );
+        );*/
     }
 
     function _afterProofSubmit(

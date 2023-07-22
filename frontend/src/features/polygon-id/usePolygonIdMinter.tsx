@@ -19,7 +19,7 @@ export const usePolygonIdMinter = () => {
         )
       );
       const polygonIdMinter = PolygonIdMinter__factory.connect(
-        "0x59725BD1ED942CFF5A514440A253891Cf8F38805",
+        "0xf8738e3748aE50D006EebD2cc5999bf7959150E1",
         signer
       );
 
@@ -33,10 +33,12 @@ export const usePolygonIdMinter = () => {
       const tx1 = await polygonIdMinter.submitZKPResponse(
         requestId,
         proof.pub_signals,
-        // @ts-ignore trust the system
-        proof.proof.pi_a,
-        proof.proof.pi_b,
-        proof.proof.pi_c
+        [proof.proof.pi_a[0], proof.proof.pi_a[1]],
+        [
+          [proof.proof.pi_b[0][0], proof.proof.pi_b[0][1]],
+          [proof.proof.pi_b[1][0], proof.proof.pi_b[1][0]],
+        ],
+        [proof.proof.pi_c[0], proof.proof.pi_c[1]]
       );
       console.log("tx1", tx1);
       toast.info("Transaction sent");
