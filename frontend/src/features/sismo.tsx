@@ -1,13 +1,13 @@
-import {
-  useAccount,
-  useConnect,
-  useDisconnect,
-  useNetwork,
-  useSwitchNetwork,
-  usePrepareContractWrite,
-  useContractWrite,
-} from "wagmi";
-import { waitForTransaction } from "@wagmi/core";
+// import {
+//   useAccount,
+//   useConnect,
+//   useDisconnect,
+//   useNetwork,
+//   useSwitchNetwork,
+//   usePrepareContractWrite,
+//   useContractWrite,
+// } from "wagmi";
+// import { waitForTransaction } from "@wagmi/core";
 import {
   AuthType,
   SismoConnectButton,
@@ -17,14 +17,14 @@ import { useBurnerWalletStore } from "@/features/burner/useBurnerWalletStore";
 import { useState } from "react";
 import { useCredentialsStore } from "@/store/credentials";
 import { polygonMumbai } from "wagmi/chains";
-import { abi as AirdropABI } from "../../abi/Airdrop.json";
+// import { abi as AirdropABI } from "../../abi/Airdrop.json";
 import {
-  errorsABI,
-  formatError,
-  fundMyAccountOnLocalFork,
+  // errorsABI,
+  // formatError,
+  // fundMyAccountOnLocalFork,
   signMessage,
 } from "@/utils/misc";
-import { decodeEventLog, formatEther } from "viem";
+// import { decodeEventLog, formatEther } from "viem";
 
 const CHAIN = polygonMumbai;
 
@@ -81,72 +81,72 @@ export const SismoButton = () => {
   );
 };
 
-export const SismoClaimButton = () => {
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string>("");
-  const [amountClaimed, setAmountClaimed] = useState<string>("");
-  const [responseBytes, setResponseBytes] = useState<string>("");
-  const { address } = useAccount();
+// export const SismoClaimButton = () => {
+//   const [loading, setLoading] = useState<boolean>(false);
+//   const [error, setError] = useState<string>("");
+//   const [amountClaimed, setAmountClaimed] = useState<string>("");
+//   const [responseBytes, setResponseBytes] = useState<string>("");
+//   const { address } = useAccount();
 
-  const { switchNetworkAsync, switchNetwork } = useSwitchNetwork();
+//   const { switchNetworkAsync, switchNetwork } = useSwitchNetwork();
 
-  const { connect, connectors, isLoading, pendingConnector } = useConnect();
-  const { disconnect } = useDisconnect();
-  const { chain } = useNetwork();
+//   const { connect, connectors, isLoading, pendingConnector } = useConnect();
+//   const { disconnect } = useDisconnect();
+//   const { chain } = useNetwork();
 
-  const contractCallInputs =
-    responseBytes && chain
-      ? {
-          address:
-            "0xc194948f79639EAd8B90F0fB90A4fee8bC3FFAC8" as `0x${string}}`,
-          abi: [...AirdropABI, ...errorsABI],
-          functionName: "claimWithSismo",
-          args: [responseBytes],
-          chain,
-        }
-      : {};
+//   const contractCallInputs =
+//     responseBytes && chain
+//       ? {
+//           address:
+//             "0xc194948f79639EAd8B90F0fB90A4fee8bC3FFAC8" as `0x${string}}`,
+//           abi: [...AirdropABI, ...errorsABI],
+//           functionName: "claimWithSismo",
+//           args: [responseBytes],
+//           chain,
+//         }
+//       : {};
 
-  const { config, error: wagmiSimulateError } =
-    usePrepareContractWrite(contractCallInputs);
-  const { writeAsync } = useContractWrite(config);
+//   const { config, error: wagmiSimulateError } =
+//     usePrepareContractWrite(contractCallInputs);
+//   const { writeAsync } = useContractWrite(config);
 
-  async function claimAirdrop() {
-    if (!address) return;
-    setError("");
-    setLoading(true);
-    try {
-      // Switch to the selected network if not already on it
-      if (chain?.id !== CHAIN.id) await switchNetworkAsync?.(CHAIN.id);
+//   async function claimAirdrop() {
+//     if (!address) return;
+//     setError("");
+//     setLoading(true);
+//     try {
+//       // Switch to the selected network if not already on it
+//       if (chain?.id !== CHAIN.id) await switchNetworkAsync?.(CHAIN.id);
 
-      const tx = await writeAsync?.();
+//       const tx = await writeAsync?.();
 
-      const txReceipt = tx && (await waitForTransaction({ hash: tx.hash }));
-      if (txReceipt?.status === "success") {
-        const mintEvent = decodeEventLog({
-          abi: AirdropABI,
-          data: txReceipt.logs[0]?.data,
-          topics: txReceipt.logs[0]?.topics,
-        });
-        const args = mintEvent?.args as {
-          value: string;
-        };
-        const ethAmount = formatEther(BigInt(args.value));
-        setAmountClaimed(ethAmount);
-      }
-    } catch (e: any) {
-      setError(formatError(e));
-    } finally {
-      setLoading(false);
-    }
-  }
+//       const txReceipt = tx && (await waitForTransaction({ hash: tx.hash }));
+//       if (txReceipt?.status === "success") {
+//         const mintEvent = decodeEventLog({
+//           abi: AirdropABI,
+//           data: txReceipt.logs[0]?.data,
+//           topics: txReceipt.logs[0]?.topics,
+//         });
+//         const args = mintEvent?.args as {
+//           value: string;
+//         };
+//         const ethAmount = formatEther(BigInt(args.value));
+//         setAmountClaimed(ethAmount);
+//       }
+//     } catch (e: any) {
+//       setError(formatError(e));
+//     } finally {
+//       setLoading(false);
+//     }
+//   }
 
-  return (
-    <button
-      className="btn btn-primary"
-      disabled={loading || Boolean(error)}
-      onClick={() => claimAirdrop()}
-    >
-      {!loading ? "Claim" : "Claiming..."}
-    </button>
-  );
-};
+//   return (
+//     <button
+//       className="btn btn-primary"
+//       disabled={loading || Boolean(error)}
+//       onClick={() => claimAirdrop()}
+//     >
+//       {!loading ? "Claim" : "Claiming..."}
+//     </button>
+//   );
+// };

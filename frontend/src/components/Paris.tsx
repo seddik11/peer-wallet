@@ -12,7 +12,7 @@ import { goerli, polygonMumbai } from "wagmi/chains";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { publicProvider } from "wagmi/providers/public";
 import { useAccount } from "wagmi";
-import { SismoClaimButton } from "@/features/sismo";
+// import { SismoClaimButton } from "@/features/sismo";
 
 const { chains, publicClient } = configureChains(
   [goerli, polygonMumbai],
