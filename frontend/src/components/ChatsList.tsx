@@ -18,6 +18,7 @@ const ChatsList = () => {
             onClick={() => router.push(`/chat/${address}`)}
           >
             <Card>
+            <div className="text-lg text-center">Governance Vote</div>
               <div className="flex gap-4 items-center">
                 <div className="text-primary w-12">
                   <UserCircleIcon className="w-12" />
