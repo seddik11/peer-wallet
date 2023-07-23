@@ -6,28 +6,38 @@ import claimImg from "../../public/voting.svg";
 import participateImg from "../../public/participate.svg";
 import Card from "./Card";
 
-import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
-import { configureChains, createConfig, WagmiConfig } from "wagmi";
+import {
+  ConnectButton,
+  getDefaultWallets,
+  RainbowKitProvider,
+} from "@rainbow-me/rainbowkit";
+import { configureChains, createConfig, useAccount, WagmiConfig } from "wagmi";
 import { polygonMumbai } from "wagmi/chains";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { publicProvider } from "wagmi/providers/public";
-import { useAccount } from "wagmi";
 import { usePeerWalletTokenBalance } from "@/features/usePeerWalletTokenBalance";
+import { WalletConnectConnector } from "@wagmi/connectors/walletConnect";
 
 const { chains, publicClient } = configureChains(
   [polygonMumbai],
   [publicProvider()]
 );
 
-const { connectors } = getDefaultWallets({
-  appName: "Paris",
-  projectId: "1f9ed16c1b11e304a254b8518fe46e67",
-  chains,
-});
-
 const wagmiConfig = createConfig({
   autoConnect: true,
-  connectors,
+  connectors: [
+    new WalletConnectConnector({
+      chains,
+      options: {
+        metadata: {
+          url: "https://peer-wallet-landing.vercel.app",
+          name: "Paris",
+          icons: ["https://paris.wagmi.io/favicon.ico"],
+          description: "Paris DAO",
+        },
+        projectId: "1f9ed16c1b11e304a254b8518fe46e67",
+      },
+    }),
+  ],
   publicClient,
 });
 
