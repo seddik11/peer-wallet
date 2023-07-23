@@ -76,7 +76,7 @@ const Credentials = () => {
                 className="btn btn-primary text-white m-auto"
                 onClick={() => setOpenModal("polygon")}
               >
-                Add residency verification
+                Add verification
               </div>
             </>
           ) : (
