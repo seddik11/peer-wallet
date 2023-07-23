@@ -15,29 +15,21 @@ import { configureChains, createConfig, useAccount, WagmiConfig } from "wagmi";
 import { polygonMumbai } from "wagmi/chains";
 import { publicProvider } from "wagmi/providers/public";
 import { usePeerWalletTokenBalance } from "@/features/usePeerWalletTokenBalance";
-import { WalletConnectConnector } from "@wagmi/connectors/walletConnect";
 
 const { chains, publicClient } = configureChains(
   [polygonMumbai],
   [publicProvider()]
 );
 
+const { connectors } = getDefaultWallets({
+  appName: "My RainbowKit App",
+  projectId: "1f9ed16c1b11e304a254b8518fe46e67",
+  chains,
+});
+
 const wagmiConfig = createConfig({
   autoConnect: true,
-  connectors: [
-    new WalletConnectConnector({
-      chains,
-      options: {
-        metadata: {
-          url: "https://peer-wallet-landing.vercel.app",
-          name: "Paris",
-          icons: ["https://paris.wagmi.io/favicon.ico"],
-          description: "Paris DAO",
-        },
-        projectId: "1f9ed16c1b11e304a254b8518fe46e67",
-      },
-    }),
-  ],
+  connectors,
   publicClient,
 });
 
