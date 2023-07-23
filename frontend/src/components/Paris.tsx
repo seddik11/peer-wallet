@@ -13,7 +13,6 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { publicProvider } from "wagmi/providers/public";
 import { useAccount } from "wagmi";
 import { usePeerWalletTokenBalance } from "@/features/usePeerWalletTokenBalance";
-// import { SismoClaimButton } from "@/features/sismo";
 
 const { chains, publicClient } = configureChains(
   [polygonMumbai],
@@ -46,7 +45,7 @@ function Home() {
   const { address } = useAccount();
   const peerWalletTokenBalance = usePeerWalletTokenBalance();
 
-  const balance = peerWalletTokenBalance.data?.toString();
+  const balance = parseInt(peerWalletTokenBalance.data?.toString() || "");
 
   return (
     <div className="App min-h-screen bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500">
@@ -65,17 +64,8 @@ function Home() {
             </div>
           </div>
           {!address && <Connect />}
-          {address && <Claim />}
-          {peerWalletTokenBalance.data && (
-            <div>
-              <div className="text-white text-4xl">
-                {peerWalletTokenBalance.data.toString()}
-              </div>
-              <div className="text-white text-4xl">
-                {peerWalletTokenBalance.data.toString()}
-              </div>
-            </div>
-          )}
+          {address && balance == 0 && <Claim />}
+          {balance > 0 && <Participate />}
         </main>
       </div>
     </div>
