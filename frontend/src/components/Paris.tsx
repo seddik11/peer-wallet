@@ -45,8 +45,6 @@ function Home() {
   const { address } = useAccount();
   const peerWalletTokenBalance = usePeerWalletTokenBalance();
 
-  const balance = parseInt(peerWalletTokenBalance.data?.toString() || "");
-
   return (
     <div className="App min-h-screen bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500">
       <ParisNavbar address={address} />
@@ -64,8 +62,8 @@ function Home() {
             </div>
           </div>
           {!address && <Connect />}
-          {address && balance == 0 && <Claim />}
-          {balance > 0 && <Participate />}
+          {address && peerWalletTokenBalance.data?.eq(0) && <Claim />}
+          {peerWalletTokenBalance.data?.gt(0) && <Participate />}
         </main>
       </div>
     </div>
