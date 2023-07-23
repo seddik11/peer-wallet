@@ -12,20 +12,17 @@ export const usePolygonIdMinter = () => {
   const burnerWallets = useBurnerWalletStore(
     (state) => state.burnerWalletsKeys
   );
-  const activeBurnerWallet = useBurnerWalletStore(
-    (state) => state.activeBurnerWallet
-  );
   const { wallet } = usePolygonIdWallet();
 
   const submitProof = useMutation({
-    mutationFn: async () => {
+    mutationFn: async (variables: { address?: string }) => {
       console.log("submitProof", {
         burnerWallets,
-        activeBurnerWallet,
+        address: variables.address,
       });
       const privateKeyBurnerWallet = burnerWallets.find((x) => {
         const privatKeyWallet = new ethers.Wallet(x);
-        return privatKeyWallet.address === activeBurnerWallet?.address;
+        return privatKeyWallet.address === variables.address;
       });
       if (!privateKeyBurnerWallet)
         throw new Error("submitProof No private key");
