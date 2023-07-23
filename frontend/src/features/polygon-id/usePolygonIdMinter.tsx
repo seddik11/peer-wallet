@@ -7,7 +7,6 @@ import { toast } from "react-toastify";
 import { usePolygonIdWallet } from "@/features/polygon-id/usePolygonId";
 import { Biconomy } from "@biconomy/mexa";
 import HDWalletProvider from "@truffle/hdwallet-provider";
-import { useState } from "react";
 
 export const usePolygonIdMinter = () => {
   const burnerWallets = useBurnerWalletStore(
@@ -20,9 +19,14 @@ export const usePolygonIdMinter = () => {
 
   const submitProof = useMutation({
     mutationFn: async () => {
-      const privateKeyBurnerWallet = burnerWallets.find(
-        (x) => x === activeBurnerWallet?.privateKey
-      );
+      console.log("submitProof", {
+        burnerWallets,
+        activeBurnerWallet,
+      });
+      const privateKeyBurnerWallet = burnerWallets.find((x) => {
+        const privatKeyWallet = new ethers.Wallet(x);
+        return privatKeyWallet.address === activeBurnerWallet?.address;
+      });
       if (!privateKeyBurnerWallet)
         throw new Error("submitProof No private key");
       const signer = new ethers.Wallet(privateKeyBurnerWallet).connect(
