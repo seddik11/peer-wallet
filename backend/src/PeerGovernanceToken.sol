@@ -1,5 +1,9 @@
 // SPDX-License-Identifier: MIT
 
+
+// TOKEN USED FOR THE GOVERNANCE, COMENTED TO ONLY BE DEPLOYED ONCE
+
+
 /*pragma solidity ^0.8.2;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
