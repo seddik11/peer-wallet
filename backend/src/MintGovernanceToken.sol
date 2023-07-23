@@ -13,16 +13,8 @@ interface IMintableERC20 is IERC20 {
     function mint(address _to, uint256 _amount) external returns (bool);
 }
 
-/*
- * @title Airdrop
- * @author Sismo
- * @dev Simple Airdrop contract that mints ERC20 tokens to the msg.sender
- * This contract is used for tutorial purposes only
- * It will be used to demonstrate how to integrate Sismo Connect
- */
 contract MintGovernanceToken is SismoConnect, ERC2771Context {
 
-  // SISMO
   error AlreadyClaimed();
   using SismoConnectHelper for SismoConnectVerifiedResult;
   mapping(uint256 => bool) public claimed;
@@ -66,28 +58,13 @@ contract MintGovernanceToken is SismoConnect, ERC2771Context {
 
     SismoConnectVerifiedResult memory result = verify({
       responseBytes: response,
-      // we want the user to prove that he owns a Sismo Vault
-      // we are recreating the auth request made in the frontend to be sure that
-      // the proofs provided in the response are valid with respect to this auth request
-
       auths: authRequests,
       claims: claimRequests,
-
-      
-      //claims: claimRequests,
-
-  
-      // we also want to check if the signed message provided in the response is the signature of the user's address
       signature: buildSignature({message: abi.encode(msg.sender)})
     });
 
-    // if the proofs and signed message are valid, we take the userId from the verified result
-    // in this case the userId is the vaultId (since we used AuthType.VAULT in the auth request),
-    // it is the anonymous identifier of a user's vault for a specific app
-    // --> vaultId = hash(userVaultSecret, appId)
     uint256 vaultId = result.getUserId(AuthType.VAULT);
 
-    // we check if the user has already claimed the airdrop
     if (claimed[vaultId]) {
       revert AlreadyClaimed();
     }
@@ -101,6 +78,7 @@ contract MintGovernanceToken is SismoConnect, ERC2771Context {
     (token.mint(_msgSender(), airdropAmount), "Minting failed");
   }
 
+  // Funtions for the gasless transaction
    function _msgSender() internal view virtual override(ERC2771Context) returns (address sender) {
         return ERC2771Context._msgSender();
     }
