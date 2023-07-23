@@ -22,3 +22,4 @@ Overall, PEERwallet is a comprehensive and secure solution, providing a bridge f
 - Peer Governance Token: 0xEa412a48E2EDFB3771aa61aFc14E203828D1e237 | https://mumbai.polygonscan.com/token/0xEa412a48E2EDFB3771aa61aFc14E203828D1e237
 - Smart Contract to mint governance tokens with Sismo credentials: 0x784CC2d483c77C7A7CFDDC07Ff9BD350b4Dea488 | https://mumbai.polygonscan.com/address/0x784CC2d483c77C7A7CFDDC07Ff9BD350b4Dea488
 - Smart Contract to mint governance tokens with Polygon ID credentials: 0x5B529d2c6f86320Ac977cfF6AdfcAd3bCffA5e41 | https://mumbai.polygonscan.com/address/0x5b529d2c6f86320ac977cff6adfcad3bcffa5e41
+- Aragon DAO: 0x5B529d2c6f86320Ac977cfF6AdfcAd3bCffA5e41 | https://app.aragon.org/#/daos/mumbai/0xd41cf1ffd4d5075e492773466059086ee0d13dec/dashboard
