@@ -17,3 +17,7 @@ To keep users engaged and connected, PEERwallet integrates XMTP for instant mess
 
 Overall, PEERwallet is a comprehensive and secure solution, providing a bridge for mainstream users to enter the Web3 space without compromising their assets or identity.
 
+## Polygon Mumbai Deployments
+
+- Peer Governance Token: 0xEa412a48E2EDFB3771aa61aFc14E203828D1e237 | https://mumbai.polygonscan.com/token/0xEa412a48E2EDFB3771aa61aFc14E203828D1e237
+
