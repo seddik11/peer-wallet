@@ -15,13 +15,8 @@ export const usePolygonIdMinter = () => {
   );
   const { wallet } = usePolygonIdWallet();
 
-  const [loading, setLoading] = useState(false);
-  const [receipt, setReceipt] = useState<any>();
-
   const submitProof = useMutation({
     mutationFn: async () => {
-      setLoading(true);
-
       const signer = new ethers.Wallet(burnerWallets[0]).connect(
         new JsonRpcProvider(
           "https://polygon-mumbai.blockpi.network/v1/rpc/public"
@@ -70,9 +65,6 @@ export const usePolygonIdMinter = () => {
       const receipt = await tx1.wait();
       toast.success("Transaction confirmed");
 
-      setLoading(false);
-      setReceipt(receipt);
-
       return receipt;
     },
   });
@@ -98,8 +90,6 @@ export const usePolygonIdMinter = () => {
 
   return {
     submitProof,
-    receipt,
-    loading,
     values,
   };
 };

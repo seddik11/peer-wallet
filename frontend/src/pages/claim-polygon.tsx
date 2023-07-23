@@ -18,7 +18,7 @@ export const PolygonIdWallet2 = (props: {
   const { wallet } = usePolygonIdWallet();
   const polygonIdStoredCreds = usePolygonIdStoredCreds();
 
-  const { submitProof, loading, receipt, values } = usePolygonIdMinter();
+  const { submitProof, values } = usePolygonIdMinter();
 
   const polygonCredentials =
     polygonIdStoredCreds.data?.filter(
@@ -60,12 +60,20 @@ export const PolygonIdWallet2 = (props: {
                     </div>
                   </div>
 
-                  {receipt?.blockHash ? (
+                  {submitProof.data?.transactionHash ? (
                     <div className="text-center mt-4">
                       <div>Transaction hash: </div>
-                      <div>{truncateAddress(receipt.blockHash)}</div>
+                      <div>
+                        <a
+                          className="link"
+                          target="_blank"
+                          href={`https://mumbai.polygonscan.com/tx/${submitProof.data?.transactionHash}`}
+                        >
+                          {truncateAddress(submitProof.data?.transactionHash)}
+                        </a>
+                      </div>
                     </div>
-                  ) : loading ? (
+                  ) : submitProof.isLoading ? (
                     <button className="btn">
                       <span className="loading loading-spinner btn-neutral text-white"></span>
                       loading
@@ -87,7 +95,7 @@ export const PolygonIdWallet2 = (props: {
             </Card>
           )}
         </div>
-        {receipt?.blockHash && (
+        {submitProof.data?.transactionHash && (
           <button
             className={"btn btn-primary text-white"}
             onClick={handleClose}
