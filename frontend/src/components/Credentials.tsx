@@ -31,7 +31,7 @@ const Credentials = () => {
                   <CheckCircleIcon />
                 </div>
                 <div className="flex-1">
-                  <div className="font-bold">Sismo proof</div>
+                  <div className="font-bold">Verified Naouns DAO holder</div>
                   <div>{truncateAddress(sismoProof)}</div>
                 </div>
               </div>
@@ -47,6 +47,7 @@ const Credentials = () => {
               </>
             )}
           </Card>
+
           {polygonCredentials.length > 0 ? (
             <>
               {polygonCredentials.map((cred) => (
@@ -72,34 +73,8 @@ const Credentials = () => {
                 className="btn btn-primary text-white m-auto"
                 onClick={() => setOpenModal("polygon")}
               >
-                VERIFY YOUR AGE WITH POLYGON ID
+                Your residency has been verified succesfully
               </div>
-            
-            {polygonCredentials.map((cred) => (
-              <Card key={cred.id}>
-                <div className="flex gap-4 items-center">
-                  <div className="text-green-300 w-12">
-                    <CheckCircleIcon />
-                  </div>
-                  <div className="flex-1">
-                    <div className="font-bold">
-                      {cred.credentialSubject.type as string}
-                    </div>
-                    <div>
-                      {cred.credentialSubject.birthday as string}
-                      {cred.credentialSubject.countryCode as string}
-                    </div>
-                  </div>
-                </div>
-              </Card>
-            ))}
-
-            <div
-              className="btn btn-primary text-white m-auto"
-              onClick={() => setOpenModal("polygon")}
-            >
-              Verify your residency
-            </div>
           </>
           ) : (
             <Card>
@@ -112,6 +87,7 @@ const Credentials = () => {
                 Add polygon ID
               </div>
             </Card>
+            
           )}
         </div>
       </div>
