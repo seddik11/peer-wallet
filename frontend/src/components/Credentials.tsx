@@ -31,13 +31,13 @@ const Credentials = () => {
                   <CheckCircleIcon />
                 </div>
                 <div className="flex-1">
-                  <div className="font-bold">Sismo proof</div>
+                  <div className="font-bold">Verify NOUN DAO membership successfully</div>
                   <div>{truncateAddress(sismoProof)}</div>
                 </div>
               </div>
             ) : (
               <>
-                <div className="text-lg text-center">No Sismo proof</div>
+                <div className="text-lg text-center"> Verify NOUN DAO membership</div>
                 <div
                   className="btn btn-primary text-white"
                   onClick={() => setOpenModal("sismo")}
@@ -72,12 +72,12 @@ const Credentials = () => {
                 className="btn btn-primary text-white m-auto"
                 onClick={() => setOpenModal("polygon")}
               >
-                Add Polygon credentials
+                Verified Polygon credentials successfully
               </div>
             </>
           ) : (
             <Card>
-              <div className="text-lg text-center">No Polygon credentials</div>
+              <div className="text-lg text-center">Verify your residency</div>
 
               <div
                 className="btn btn-primary text-white"
