@@ -31,13 +31,13 @@ const Credentials = () => {
                   <CheckCircleIcon />
                 </div>
                 <div className="flex-1">
-                  <div className="font-bold">Verified Naouns DAO holder</div>
+                  <div className="font-bold">Sismo proof</div>
                   <div>{truncateAddress(sismoProof)}</div>
                 </div>
               </div>
             ) : (
               <>
-                <div className="text-lg text-center">Verify Noun DAO membership</div>
+                <div className="text-lg text-center">No Sismo proof</div>
                 <div
                   className="btn btn-primary text-white"
                   onClick={() => setOpenModal("sismo")}
@@ -47,7 +47,6 @@ const Credentials = () => {
               </>
             )}
           </Card>
-
           {polygonCredentials.length > 0 ? (
             <>
               {polygonCredentials.map((cred) => (
@@ -73,21 +72,20 @@ const Credentials = () => {
                 className="btn btn-primary text-white m-auto"
                 onClick={() => setOpenModal("polygon")}
               >
-                Your residency has been verified succesfully
+                Add Polygon credentials
               </div>
-          </>
+            </>
           ) : (
             <Card>
-              <div className="text-lg text-center">Verify your residency</div>
+              <div className="text-lg text-center">No Polygon credentials</div>
 
               <div
                 className="btn btn-primary text-white"
                 onClick={() => setOpenModal("polygon")}
               >
-                Add polygon ID
+                Add Polygon credentials
               </div>
             </Card>
-            
           )}
         </div>
       </div>
