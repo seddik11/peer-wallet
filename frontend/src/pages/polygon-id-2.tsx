@@ -149,7 +149,10 @@ export const PolygonIdWallet2 = (props: {
                     </div>
                   </div>
                 </div>
-                <button className={"btn"} onClick={() => submitProof.mutate()}>
+                <button
+                  className={"btn"}
+                  onClick={() => submitProof.mutate({ address: "" })}
+                >
                   <span className="btn-neutral text-white"></span>
                   Submit
                 </button>
