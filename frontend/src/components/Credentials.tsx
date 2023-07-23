@@ -31,13 +31,17 @@ const Credentials = () => {
                   <CheckCircleIcon />
                 </div>
                 <div className="flex-1">
-                  <div className="font-bold">Verify NOUN DAO membership succesfully</div>
+                  <div className="font-bold">
+                    Verify NOUN DAO membership succesfully
+                  </div>
                   <div>{truncateAddress(sismoProof)}</div>
                 </div>
               </div>
             ) : (
               <>
-                <div className="text-lg text-center"> Verify NOUN DAO membership</div>
+                <div className="text-lg text-center">
+                  Verify NOUN DAO membership
+                </div>
                 <div
                   className="btn btn-primary text-white"
                   onClick={() => setOpenModal("sismo")}
@@ -72,7 +76,7 @@ const Credentials = () => {
                 className="btn btn-primary text-white m-auto"
                 onClick={() => setOpenModal("polygon")}
               >
-                Verified Polygon credentials succesfully
+                Add residency verification
               </div>
             </>
           ) : (
