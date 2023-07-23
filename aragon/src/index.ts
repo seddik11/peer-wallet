@@ -35,7 +35,7 @@ import {
       supportThreshold: 0.5, // 50%
     },
     useToken: {
-        tokenAddress: "0x4C99A7B41f8dfA29c1BB4181FBd474291e927dAA", // contract address of the token to use as the voting token
+        tokenAddress: "0xEa412a48E2EDFB3771aa61aFc14E203828D1e237", // contract address of the token to use as the voting token
         wrappedToken: {
           name: "GOV PEER", // the name of your token
           symbol: "GPT", // the symbol for your token. shouldn't be more than 5 letters
@@ -49,7 +49,7 @@ import {
   
   const createDaoParams: CreateDaoParams = {
     metadataUri,
-    ensSubdomain: "peerup", // my-org.dao.eth
+    ensSubdomain: "peer-dao", // my-org.dao.eth
     plugins: [tokenVotingInstallItem], // plugin array cannot be empty or the transaction will fail. you need at least one governance mechanism to create your DAO.
   };
   

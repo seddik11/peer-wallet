@@ -37,7 +37,7 @@ const Credentials = () => {
               </div>
             ) : (
               <>
-                <div className="text-lg text-center">Verify Noun DAO membership</div>
+                <div className="text-lg text-center">No Sismo proof</div>
                 <div
                   className="btn btn-primary text-white"
                   onClick={() => setOpenModal("sismo")}
@@ -72,44 +72,18 @@ const Credentials = () => {
                 className="btn btn-primary text-white m-auto"
                 onClick={() => setOpenModal("polygon")}
               >
-                VERIFY YOUR AGE WITH POLYGON ID
+                Add Polygon credentials
               </div>
-            
-            {polygonCredentials.map((cred) => (
-              <Card key={cred.id}>
-                <div className="flex gap-4 items-center">
-                  <div className="text-green-300 w-12">
-                    <CheckCircleIcon />
-                  </div>
-                  <div className="flex-1">
-                    <div className="font-bold">
-                      {cred.credentialSubject.type as string}
-                    </div>
-                    <div>
-                      {cred.credentialSubject.birthday as string}
-                      {cred.credentialSubject.countryCode as string}
-                    </div>
-                  </div>
-                </div>
-              </Card>
-            ))}
-
-            <div
-              className="btn btn-primary text-white m-auto"
-              onClick={() => setOpenModal("polygon")}
-            >
-              Verify your residency
-            </div>
-          </>
+            </>
           ) : (
             <Card>
-              <div className="text-lg text-center">Verify your residency</div>
+              <div className="text-lg text-center">No Polygon credentials</div>
 
               <div
                 className="btn btn-primary text-white"
                 onClick={() => setOpenModal("polygon")}
               >
-                Add polygon ID
+                Add Polygon credentials
               </div>
             </Card>
           )}

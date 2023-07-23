@@ -43,6 +43,7 @@ const sismoConnectConfig: SismoConnectConfig = {
       "0xc281bd4db5bf94f02a8525dca954db3895685700",
       "twitter:leo21_eth",
       "github:leo21",
+      "0x0Cf84F01C311Dc093969136B1814F05B5b3167F6",
     ],
   },
 };
