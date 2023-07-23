@@ -8,11 +8,11 @@ import Card from "./Card";
 
 import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { configureChains, createConfig, WagmiConfig } from "wagmi";
-import { goerli, polygonMumbai } from "wagmi/chains";
+import { polygonMumbai } from "wagmi/chains";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { publicProvider } from "wagmi/providers/public";
 import { useAccount } from "wagmi";
-// import { SismoClaimButton } from "@/features/sismo";
+import { usePeerWalletTokenBalance } from "@/features/usePeerWalletTokenBalance";
 
 const { chains, publicClient } = configureChains(
   [polygonMumbai],
@@ -43,6 +43,9 @@ export default function ParisLanding() {
 
 function Home() {
   const { address } = useAccount();
+  const peerWalletTokenBalance = usePeerWalletTokenBalance();
+
+  const balance = parseInt(peerWalletTokenBalance.data?.toString() || "");
 
   return (
     <div className="App min-h-screen bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500">
@@ -61,7 +64,8 @@ function Home() {
             </div>
           </div>
           {!address && <Connect />}
-          {address && <Claim />}
+          {address && balance == 0 && <Claim />}
+          {balance > 0 && <Participate />}
         </main>
       </div>
     </div>
@@ -78,26 +82,38 @@ const Connect = () => (
   </>
 );
 
-const Claim = () => (
-  <>
-    <Image className="mt-10 w-96" alt="landing-image" src={claimImg} />
+const Claim = () => {
+  const handleClaim = () => {
+    // window.open("http://localhost:3000/claim-polygon");
+    window.open("https://peer-wallet.vercel.app/claim-polygon");
+  };
 
-    <div className="mt-10">
-      <Card>
-        <div className="min-w-96 flex flex-col items-center text-center gap-6">
-          <h1 className="text-black text-6xl font-extrabold leading-1 ">
-            Welcome
-          </h1>
-          <h2 className="text-black text-center text-lg">
-            To start participating claim your voting rights
-          </h2>
+  return (
+    <>
+      <Image className="mt-10 w-96" alt="landing-image" src={claimImg} />
 
-          {/* <SismoClaimButton /> */}
-        </div>
-      </Card>
-    </div>
-  </>
-);
+      <div className="mt-10">
+        <Card>
+          <div className="min-w-96 flex flex-col items-center text-center gap-6">
+            <h1 className="text-black text-6xl font-extrabold leading-1 ">
+              Welcome
+            </h1>
+            <h2 className="text-black text-center text-lg">
+              To start participating claim your voting rights
+            </h2>
+
+            <div
+              className="w-full btn btn-primary text-white"
+              onClick={handleClaim}
+            >
+              Claim
+            </div>
+          </div>
+        </Card>
+      </div>
+    </>
+  );
+};
 
 const Participate = () => (
   <>

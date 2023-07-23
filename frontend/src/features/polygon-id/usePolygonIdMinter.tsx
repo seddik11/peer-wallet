@@ -7,14 +7,21 @@ import { toast } from "react-toastify";
 import { usePolygonIdWallet } from "@/features/polygon-id/usePolygonId";
 import { Biconomy } from "@biconomy/mexa";
 import HDWalletProvider from "@truffle/hdwallet-provider";
+import { useState } from "react";
 
 export const usePolygonIdMinter = () => {
   const burnerWallets = useBurnerWalletStore(
     (state) => state.burnerWalletsKeys
   );
   const { wallet } = usePolygonIdWallet();
+
+  const [loading, setLoading] = useState(false);
+  const [receipt, setReceipt] = useState<any>();
+
   const submitProof = useMutation({
     mutationFn: async () => {
+      setLoading(true);
+
       const signer = new ethers.Wallet(burnerWallets[0]).connect(
         new JsonRpcProvider(
           "https://polygon-mumbai.blockpi.network/v1/rpc/public"
@@ -63,6 +70,9 @@ export const usePolygonIdMinter = () => {
       const receipt = await tx1.wait();
       toast.success("Transaction confirmed");
 
+      setLoading(false);
+      setReceipt(receipt);
+
       return receipt;
     },
   });
@@ -88,6 +98,8 @@ export const usePolygonIdMinter = () => {
 
   return {
     submitProof,
+    receipt,
+    loading,
     values,
   };
 };

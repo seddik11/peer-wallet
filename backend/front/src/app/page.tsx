@@ -1,3 +1,8 @@
+
+// FRONTEND USED FOR TESTING FROM SISMO TUTORIAL
+// NOT THE FRONTEND USED
+
+
 "use client";
 
 import styles from "./page.module.css";
