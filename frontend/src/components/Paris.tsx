@@ -72,7 +72,9 @@ function Home() {
             </div>
           </div>
           {!address && <Connect />}
-          {address && peerWalletTokenBalance.data?.eq(0) && <Claim />}
+          {address && peerWalletTokenBalance.data?.eq(0) && (
+            <Claim address={address} />
+          )}
           {peerWalletTokenBalance.data?.gt(0) && <Participate />}
         </main>
       </div>
@@ -90,10 +92,12 @@ const Connect = () => (
   </>
 );
 
-const Claim = () => {
+const Claim = ({ address }: { address: string }) => {
   const handleClaim = () => {
     // window.open("http://localhost:3000/claim-polygon");
-    window.open("https://peer-wallet.vercel.app/claim-polygon");
+    window.open(
+      `https://peer-wallet.vercel.app/claim-polygon?address=${address}`
+    );
   };
 
   return (

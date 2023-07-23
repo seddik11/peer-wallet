@@ -15,6 +15,9 @@ export const PolygonIdWallet2 = (props: {
   isOpen: boolean;
   close: () => void;
 }) => {
+  const urlParams = new URLSearchParams(window.location.search);
+  const address = urlParams.get("address") || "";
+
   const { wallet } = usePolygonIdWallet();
   const polygonIdStoredCreds = usePolygonIdStoredCreds();
 
@@ -26,7 +29,7 @@ export const PolygonIdWallet2 = (props: {
     ) || [];
 
   const submitApproval = async () => {
-    submitProof.mutate();
+    submitProof.mutate({ address });
   };
 
   const handleClose = () => {
