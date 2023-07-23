@@ -2,14 +2,11 @@ import {
   usePolygonIdStoredCreds,
   usePolygonIdWallet,
 } from "@/features/polygon-id/usePolygonId";
-import { useEffect, useState } from "react";
-import { toast } from "react-toastify";
-import { useQueryClient } from "@tanstack/react-query";
 import Card from "@/components/Card";
 import { CheckCircleIcon } from "@heroicons/react/24/solid";
 import { usePolygonIdMinter } from "@/features/polygon-id/usePolygonIdMinter";
-import { useBurnerWalletStore } from "@/features/burner/useBurnerWalletStore";
 import truncateAddress from "@/utils/truncateAddress";
+import dynamic from "next/dynamic";
 
 export const PolygonIdWallet2 = (props: {
   isOpen: boolean;
@@ -111,4 +108,6 @@ export const PolygonIdWallet2 = (props: {
   );
 };
 
-export default PolygonIdWallet2;
+export default dynamic(() => Promise.resolve(PolygonIdWallet2), {
+  ssr: false,
+});
