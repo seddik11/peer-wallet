@@ -37,7 +37,7 @@ import {
     metadata,
   );
   
-  const pluginAddress: string = "0x1234567890123456789012345678901234567890"; // the address of the plugin contract containing all plugin logic.
+  const pluginAddress: string = "0x73d0dCB71CDC2B9fB7b82A24EBE0a5774451dE7d"; // the address of the plugin contract containing all plugin logic.
   
   const proposalParams: CreateMajorityVotingProposalParams = {
     pluginAddress,
@@ -46,7 +46,6 @@ import {
     startDate: new Date(),
     endDate: new Date(),
     executeOnPass: false,
-    creatorVote: VoteValues.YES, // default NO, other options: ABSTAIN, YES. This saves gas for the voting transaction.
   };
   
   // Create a proposal where members participate through token voting.
@@ -66,3 +65,8 @@ import {
       console.error(err);
     }
   }
+
+    // {
+  //   daoAddress: '0xaF7Cb662CF96F0CFa2185D308e7d5FC6DE94E5BF',
+  //   pluginAddresses: [ '0x73d0dCB71CDC2B9fB7b82A24EBE0a5774451dE7d' ]
+  // }
