@@ -87,6 +87,46 @@ const Credentials = () => {
               </div>
             </Card>
           )}
+          {polygonCredentials.length > 0 ? (
+            <>
+              {polygonCredentials.map((cred) => (
+                <Card key={cred.id}>
+                  <div className="flex gap-4 items-center">
+                    <div className="text-green-300 w-12">
+                      <CheckCircleIcon />
+                    </div>
+                    <div className="flex-1">
+                      <div className="font-bold">
+                        {cred.credentialSubject.type as string}
+                      </div>
+                      <div>
+                        {cred.credentialSubject.birthday as string}
+                        {cred.credentialSubject.countryCode as string}
+                      </div>
+                    </div>
+                  </div>
+                </Card>
+              ))}
+
+              <div
+                className="btn btn-primary text-white m-auto"
+                onClick={() => setOpenModal("polygon")}
+              >
+                Verified Polygon credentials successfully
+              </div>
+            </>
+          ) : (
+            <Card>
+              <div className="text-lg text-center">Verify your age</div>
+
+              <div
+                className="btn btn-primary text-white"
+                onClick={() => setOpenModal("polygon")}
+              >
+                Add Polygon credentials
+              </div>
+            </Card>
+          )}
         </div>
       </div>
       <div className={`modal ${openModal === "sismo" && "modal-open"}`}>
