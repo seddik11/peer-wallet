@@ -13,11 +13,19 @@ export const usePolygonIdMinter = () => {
   const burnerWallets = useBurnerWalletStore(
     (state) => state.burnerWalletsKeys
   );
+  const activeBurnerWallet = useBurnerWalletStore(
+    (state) => state.activeBurnerWallet
+  );
   const { wallet } = usePolygonIdWallet();
 
   const submitProof = useMutation({
     mutationFn: async () => {
-      const signer = new ethers.Wallet(burnerWallets[0]).connect(
+      const privateKeyBurnerWallet = burnerWallets.find(
+        (x) => x === activeBurnerWallet?.privateKey
+      );
+      if (!privateKeyBurnerWallet)
+        throw new Error("submitProof No private key");
+      const signer = new ethers.Wallet(privateKeyBurnerWallet).connect(
         new JsonRpcProvider(
           "https://polygon-mumbai.blockpi.network/v1/rpc/public"
         )
