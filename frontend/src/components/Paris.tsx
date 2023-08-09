@@ -105,7 +105,7 @@ const Claim = ({ address }: { address: string }) => {
   const handleClaim = () => {
     // window.open("http://localhost:3000/claim-polygon");
     window.open(
-      `https://peer-wallet.vercel.app/claim-polygon?address=${address}`
+      `https://pee-rwallet.vercel.app/claim-polygon?address=${address}`
     );
   };
 
