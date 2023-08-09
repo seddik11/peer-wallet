@@ -34,8 +34,8 @@ const connectors = connectorsForWallets([
           projectId: "1f9ed16c1b11e304a254b8518fe46e67",
           metadata: {
             description: "Bonjour, Paris!",
-            icons: ["https://peerwaller.vercel.app/favicon.ico"],
-            url: "https://peerwaller.vercel.app",
+            icons: ["https://peer-wallet-landing.vercel.app/favicon.ico"],
+            url: "https://peer-wallet-landing.vercel.app",
             name: "2nd arrondissement",
           },
         },
@@ -105,7 +105,7 @@ const Claim = ({ address }: { address: string }) => {
   const handleClaim = () => {
     // window.open("http://localhost:3000/claim-polygon");
     window.open(
-      `https://pee-rwallet.vercel.app/claim-polygon?address=${address}`
+      `https://peer-wallet.vercel.app/claim-polygon?address=${address}`
     );
   };
 
